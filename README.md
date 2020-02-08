@@ -1,15 +1,25 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# NOTED.
 
-## Available Scripts
+## \*\*Required Dependencies:
 
-In the project directory, you can run:
+- React.js: `$ npm install react`
+- Bootstrap: `$ npm install bootstrap`
+- Node.js:
+  1. `$ curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -`
+  2. `$ sudo apt-get install -y nodejs`
+- react-tabs: `$ npm install react-tabs`
+- JQuery: `$ npm install jquery`
+
+## To Run Project:
+
+In the project directory (../noted/), run:
 
 ### `npm start`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
+The page will automatically reload if you make edits.<br />
 You will also see any lint errors in the console.
 
 ### `npm test`
