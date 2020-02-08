@@ -1,3 +1,13 @@
+## Dependencies:
+
+- React.js: `$ npm install react`
+- Bootstrap: `$ npm install bootstrap`
+- Node.js:
+  - `\$ curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -`
+  - `$ sudo apt-get install -y nodejs`
+- react-tabs: `$ npm install react-tabs`
+- JQuery: `$ npm install jquery`
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
