@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
+import React, { Component } from "react";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
 
 class MainTabs extends Component {
   render() {
@@ -30,7 +30,7 @@ class MainTabs extends Component {
           <p class="pl-3">Add "Settings" panel content here</p>
         </TabPanel>
       </Tabs>
-    )
+    );
   }
 }
 
