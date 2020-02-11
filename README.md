@@ -1,6 +1,6 @@
 # NOTED.
 
-## \*\*Required Dependencies:
+## \*\* Dependencies:
 
 - React.js: `$ npm install react`
 - Bootstrap: `$ npm install bootstrap`
