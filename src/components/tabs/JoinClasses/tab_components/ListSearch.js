@@ -5,6 +5,9 @@ import AddClassAlert from "./AddClassAlert";
 
 /* 
 ***************************************
+This component renders a list of items that is searchable.  On list item click, a popup modal
+is rendered to show them additional class info and allow them to add the class to their classes.
+
 PROPS:
     - list: List of items that are searchable.
     - placeholder: placeholder text for search bar.  Default="Search..."
@@ -26,7 +29,7 @@ class ListSearch extends Component {
 
   //If component is created successfully,
   componentDidMount() {
-    //default filtered list to entire list
+    //default filtered and availableClassses lists to entire list
     this.setState({
       filtered: this.props.list,
       availableClasses: this.props.list
@@ -48,7 +51,7 @@ class ListSearch extends Component {
     });
   }
 
-  // Handle change to input into search bar
+  // Handle change to input in search bar
   handleChange(e) {
     let currentList = [];
 
@@ -103,12 +106,13 @@ class ListSearch extends Component {
       delete clicked[className];
       return clicked;
     });
+    // Show alert that class add was successful
     this.setState({
       showAlert: true
     });
   }
 
-  // Hide alert when closed
+  // Hide alert when alert is closed
   handleCloseAlert = () => {
     this.setState({
       showAlert: false
@@ -118,19 +122,22 @@ class ListSearch extends Component {
   render() {
     return (
       <React.Fragment>
+        {/* Show alert if showAlert is true */}
         {this.state.showAlert ? (
           <AddClassAlert onClose={this.handleCloseAlert} />
         ) : null}
+        {/* Create ListGroup component */}
         <ListGroup>
           {/*Create search bar*/}
           <input
             type="text"
             className="form-control"
             onChange={this.handleChange}
-            placeholder={this.props.placeholder || "Search..."}
+            placeholder={this.props.placeholder || "Search..."} //Default="Search..."
           />
           {/*Create list items dynamically based on filtered list*/}
           {this.state.filtered.map(className =>
+            // If class was clicked, show add class modal
             this.state.clicked[className] ? (
               <AddClassModal
                 key={className + "_modal"}
@@ -138,6 +145,7 @@ class ListSearch extends Component {
                 onAdd={() => this.handleAdd(className)}
               />
             ) : (
+              // If not, show class item in ListGroup
               <ListGroup.Item
                 action
                 key={className + "_listitem"}

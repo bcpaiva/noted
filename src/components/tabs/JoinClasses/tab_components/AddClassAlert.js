@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Alert from "react-bootstrap/Alert";
 
+// Simple bootstrap alert module to let user know that class was added successfully.
 class AddClassAlert extends Component {
   state = {};
   render() {
