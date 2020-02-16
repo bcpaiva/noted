@@ -1,6 +1,6 @@
 # NOTED.
 
-## \*\*Required Dependencies:
+## \*\* Dependencies:
 
 - Node.js:
   1. `$ curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -`
