@@ -1,18 +1,12 @@
 import React, { Component } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
-import AddClassModal from "./AddClassModal";
-import AddClassAlert from "./AddClassAlert";
+import JoinClassModal from "./JoinClassModal";
+import Alert from "react-bootstrap/Alert";
 
-/* 
-***************************************
-This component renders a list of items that is searchable.  On list item click, a popup modal
-is rendered to show them additional class info and allow them to add the class to their classes.
-
-PROPS:
-    - list: List of items that are searchable.
-    - placeholder: placeholder text for search bar.  Default="Search..."
-***************************************
-*/
+/**
+ * This component renders a list of items that is searchable.  On list item click, a popup modal
+ * is rendered to show them additional class info and allow them to add the class to their classes.
+ */
 
 class ListSearch extends Component {
   constructor() {
@@ -43,10 +37,10 @@ class ListSearch extends Component {
   }
 
   // Change value of clicked for certain class
-  updateClicked(className, value) {
+  updateClicked(classID, value) {
     this.setState(prevState => {
       let clicked = prevState.clicked;
-      clicked[className] = value;
+      clicked[classID] = value;
       return clicked;
     });
   }
@@ -83,27 +77,27 @@ class ListSearch extends Component {
   }
 
   // When a list element is clicked, set the element to clicked
-  handleClick(className) {
-    this.updateClicked(className, true);
+  handleClick(classID) {
+    this.updateClicked(classID, true);
   }
 
   // Reset button to unclicked if operation canceled
-  handleCancel(className) {
-    this.updateClicked(className, false);
+  handleClose(classID) {
+    this.updateClicked(classID, false);
   }
 
   // TODO: Add class to user's class list if added
-  handleAdd(className) {
-    this.updateClicked(className, false);
+  handleAdd(classID) {
+    this.updateClicked(classID, false);
     // Remove class from available class
     this.state.availableClasses.splice(
-      this.state.availableClasses.indexOf(className),
+      this.state.availableClasses.indexOf(classID),
       1
     );
     // Remove class from clicked state
     this.setState(prevState => {
       let clicked = prevState.clicked;
-      delete clicked[className];
+      delete clicked[classID];
       return clicked;
     });
     // Show alert that class add was successful
@@ -124,7 +118,9 @@ class ListSearch extends Component {
       <React.Fragment>
         {/* Show alert if showAlert is true */}
         {this.state.showAlert ? (
-          <AddClassAlert onClose={this.handleCloseAlert} />
+          <Alert variant="success" onClose={this.handleCloseAlert} dismissible>
+            <p1>Class successfully added.</p1>
+          </Alert>
         ) : null}
         {/* Create ListGroup component */}
         <ListGroup>
@@ -136,22 +132,22 @@ class ListSearch extends Component {
             placeholder={this.props.placeholder || "Search..."} //Default="Search..."
           />
           {/*Create list items dynamically based on filtered list*/}
-          {this.state.filtered.map(className =>
+          {this.state.filtered.map(classID =>
             // If class was clicked, show add class modal
-            this.state.clicked[className] ? (
-              <AddClassModal
-                key={className + "_modal"}
-                onCancel={() => this.handleCancel(className)}
-                onAdd={() => this.handleAdd(className)}
+            this.state.clicked[classID] ? (
+              <JoinClassModal
+                key={classID + "_modal"}
+                onClose={() => this.handleClose(classID)}
+                onAdd={() => this.handleAdd(classID)}
               />
             ) : (
               // If not, show class item in ListGroup
               <ListGroup.Item
                 action
-                key={className + "_listitem"}
-                onClick={() => this.handleClick(className)}
+                key={classID + "_listitem"}
+                onClick={() => this.handleClick(classID)}
               >
-                {className}
+                {classID}
               </ListGroup.Item>
             )
           )}

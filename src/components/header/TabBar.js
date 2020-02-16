@@ -42,12 +42,14 @@ class TabBar extends Component {
   render() {
     return (
       <React.Fragment>
+        {/** Navigation (tab) bar component */}
         <Nav
           className="navbar-light bg-light text-white pl-5 pt-2"
           variant="tabs"
           defaultActiveKey="Join Classes"
           onSelect={this.handleSelect}
         >
+          {/** Each tab bar item */}
           <Nav.Item>
             <Nav.Link eventKey="Join Classes">Join Classes</Nav.Link>
           </Nav.Item>
@@ -64,6 +66,7 @@ class TabBar extends Component {
             <Nav.Link eventKey="My Settings">My Settings</Nav.Link>
           </Nav.Item>
         </Nav>
+        {/** Render proper tab content */}
         <div className="pt-4">{this.getActiveTab()}</div>
       </React.Fragment>
     );
