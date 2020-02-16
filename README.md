@@ -2,13 +2,9 @@
 
 ## \*\* Dependencies:
 
-- React.js: `$ npm install react`
-- Bootstrap: `$ npm install bootstrap`
 - Node.js:
   1. `$ curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -`
   2. `$ sudo apt-get install -y nodejs`
-- react-tabs: `$ npm install react-tabs`
-- JQuery: `$ npm install jquery`
 
 ## To Run Project:
 
