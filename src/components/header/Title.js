@@ -21,16 +21,11 @@ class Title extends Component {
     <li><a href="#"><i></i> Change Password</a></li>
     <li><a href="#"><i></i> Account Settings</a></li>
     <li><a href="#"><i></i> Privacy Settings</a></li>
-    <li><a href="#"><i class="i"></i> Logout</a></li>
   </ul>
 </div>
   </Navbar>
   </>
-//
-//   }
-//   title="Button with icon component"
-// />
-//      <button type="button" class="btn btn-primary"><i class="fas fa-cog"></i> Settings</button>
+
 );
 }
 }

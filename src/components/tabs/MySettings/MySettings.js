@@ -7,16 +7,16 @@ class MySettings extends React.Component {
   // //state = {};
   constructor() {
     super();
-    this.deleteAccount = this.deleteAccount.bind(this);
-     this.logout = this.logout.bind(this);
-   }
-  deleteAccount(e) {
-    console.log("Deleting Account")
-  }
-
-  logout(e) {
-    console.log("Logging out")
-  }
+  //   this.deleteAccount = this.deleteAccount.bind(this);
+  //    this.logout = this.logout.bind(this);
+  //  }
+  // deleteAccount(e) {
+  //   console.log("Deleting Account")
+  // }
+  //
+  // logout(e) {
+  //   console.log("Logging out")
+  // }
 
 
 
@@ -49,8 +49,8 @@ class MySettings extends React.Component {
 //       </div>
 
 
-    );
-  }
-}
+  //  );
+}}
+
 
 export default MySettings;
