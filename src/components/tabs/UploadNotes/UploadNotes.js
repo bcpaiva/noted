@@ -1,21 +1,7 @@
 import React, { Component } from "react";
-import { db } from "../../../api/firebase";
 
 class UploadNotes extends Component {
   state = {};
-
-  componentDidMount() {
-    db.collection("cities")
-      .doc("NY")
-      .set({
-        name: "Las Vegas",
-        state: "CA",
-        country: "USA"
-      })
-      .then(function() {
-        console.log("Document successfully written!");
-      });
-  }
 
   render() {
     return (
