@@ -2,12 +2,16 @@ import React, { Component } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-// Bootstrap popup modal to show user more class information and allow them to add class
+/**
+ * Bootstrap popup modal to show user more class information and allow them to add class
+ */
+
 class JoinClassModal extends Component {
   render() {
     return (
       <React.Fragment>
-        <Modal show={true} onHide={this.props.onCancel}>
+        {/** Show modal to confirm add class */}
+        <Modal show={true} onHide={this.props.onClose}>
           <Modal.Header closeButton>
             <Modal.Title>Add Class:</Modal.Title>
           </Modal.Header>
@@ -16,7 +20,8 @@ class JoinClassModal extends Component {
               "No class data available at this time." /* TODO: Pull class data from Firebase */}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.props.onCancel}>
+            {/** Create cancel and "add class" buttons at bottom of modal */}
+            <Button variant="secondary" onClick={this.props.onClose}>
               Cancel
             </Button>
             <Button variant="primary" onClick={this.props.onAdd}>
