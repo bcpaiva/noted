@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Alert from "react-bootstrap/Alert";
 
 // Simple bootstrap alert module to let user know that class was added successfully.
-class AddClassAlert extends Component {
+class JoinClassAlert extends Component {
   state = {};
   render() {
     return (
@@ -13,4 +13,4 @@ class AddClassAlert extends Component {
   }
 }
 
-export default AddClassAlert;
+export default JoinClassAlert;

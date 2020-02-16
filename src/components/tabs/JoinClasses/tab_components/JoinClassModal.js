@@ -3,7 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
 // Bootstrap popup modal to show user more class information and allow them to add class
-class AddClassModal extends Component {
+class JoinClassModal extends Component {
   render() {
     return (
       <React.Fragment>
@@ -29,4 +29,4 @@ class AddClassModal extends Component {
   }
 }
 
-export default AddClassModal;
+export default JoinClassModal;
