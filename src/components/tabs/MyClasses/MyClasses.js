@@ -1,11 +1,13 @@
 import React, { Component } from "react";
+import ListMyClasses from "./tab_components/ListMyClasses";
 
 class MyClasses extends Component {
-  state = {};
+  state = { list: ["CIS 425", "ECS 392", "CIS 444", "CSE 486"] }; // List of classes
+
   render() {
     return (
       <div className="container text-center">
-        <p>This is where My Classes page content goes</p>
+        <ListMyClasses list={this.state.list} />
       </div>
     );
   }
