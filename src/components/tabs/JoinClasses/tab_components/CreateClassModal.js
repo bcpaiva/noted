@@ -43,9 +43,7 @@ class CreateClassModal extends Component {
                   type="classProfessor"
                   placeholder="Enter class professor"
                 />
-                <Form.Text className="text-muted">
-                  ex: Professor Mohan
-                </Form.Text>
+                <Form.Text className="text-muted">ex: C. Mohan</Form.Text>
               </Form.Group>
               <Form.Group controlId="formClassSchool">
                 <Form.Label>School</Form.Label>
