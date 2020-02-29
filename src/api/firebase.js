@@ -19,4 +19,25 @@ if (!firebase.apps.length) {
 
 const db = firebase.firestore();
 
-export { db };
+/**
+ * Retrieve class data from firebase.
+ * @param {function} callback Callback function that takes the retrieved data (classData) as a parameter
+ */
+let getClasses = callback => {
+  let classData = {};
+  db.collection("classes")
+    .get()
+    .then(classes => {
+      classes.forEach(cls => {
+        classData[cls.id] = cls.data();
+      });
+    })
+    .then(() => {
+      callback(classData);
+    })
+    .catch(err => {
+      console.log("Error getting documents", err);
+    });
+};
+
+export { getClasses };
