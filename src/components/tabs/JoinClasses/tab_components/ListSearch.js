@@ -160,17 +160,8 @@ class ListSearch extends Component {
                 key={classKey + "item"}
                 onClick={() => this.handleClick(classKey)}
               >
-                <div className="row text-center">
-                  <div className="col"></div>
-                  <div className="col-6">
-                    {this.state.filtered[classKey]["data"]["Class ID"]}
-                  </div>
-
-                  <div className="col text-right">
-                    <small>
-                      {this.state.filtered[classKey]["data"]["School"]}
-                    </small>
-                  </div>
+                <div className="text-center">
+                  {this.state.filtered[classKey]["data"]["Class ID"]}
                 </div>
               </ListGroup.Item>
             );
