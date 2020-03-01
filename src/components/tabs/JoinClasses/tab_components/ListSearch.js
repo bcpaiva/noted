@@ -24,8 +24,8 @@ class ListSearch extends Component {
   //If component is created successfully,
   componentDidMount() {
     this.setState({
-      filtered: this.props.classList,
-      availableClasses: this.props.classList
+      filtered: this.props.classData,
+      availableClasses: this.props.classData
     });
   }
 
@@ -116,11 +116,10 @@ class ListSearch extends Component {
   };
 
   render() {
-    // If data has been retrieved yet, don't render elements
+    // Don't render component until firebase data has been retrieved
     if (!this.state.filtered) {
       return <div />;
     }
-    //else, render expected elements
     return (
       <React.Fragment>
         {/* Show alert if showAlert is true */}
@@ -138,7 +137,7 @@ class ListSearch extends Component {
             onChange={this.handleChange}
             placeholder={this.props.placeholder || "Search..."} //Default="Search..."
           />
-          {/*Create list items dynamically based on filtered list*/}
+          {/*Show modal to join class if clicked*/}
           {Object.keys(this.state.filtered).map(classKey => {
             return (
               // If class was clicked, show add class modal
@@ -152,6 +151,7 @@ class ListSearch extends Component {
               ) : null
             );
           })}
+          {/*Create list items dynamically based on filtered list*/}
           {Object.keys(this.state.filtered).map(classKey => {
             return (
               // Show each class item in ListGroup
@@ -160,8 +160,16 @@ class ListSearch extends Component {
                 key={classKey + "item"}
                 onClick={() => this.handleClick(classKey)}
               >
-                <div className="text-center">
-                  {this.state.filtered[classKey]["data"]["Class ID"]}
+                <div className="row">
+                  <div className="col-sm" />
+                  <div className="col-sm text-center">
+                    {this.state.filtered[classKey]["data"]["class_id"]}
+                  </div>
+                  <div class=" col-sm text-right">
+                    <small>
+                      {this.state.filtered[classKey]["data"]["professor"]}
+                    </small>
+                  </div>
                 </div>
               </ListGroup.Item>
             );

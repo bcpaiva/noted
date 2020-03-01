@@ -11,21 +11,6 @@ import Button from "react-bootstrap/Button";
  */
 
 class JoinClassModal extends Component {
-  renderClassInfo() {
-    //If no data received, return false
-    if (!this.props.data) {
-      return false;
-    }
-    return Object.keys(this.props.data).map(dataKey => {
-      return (
-        <React.Fragment>
-          <h3>{dataKey + ":"}</h3>
-          <p>{this.props.data[dataKey]}</p>
-        </React.Fragment>
-      );
-    });
-  }
-
   render() {
     return (
       <React.Fragment>
@@ -36,14 +21,14 @@ class JoinClassModal extends Component {
           </Modal.Header>
           <Modal.Body>
             {/** Render class data in modal */}
-            {Object.keys(this.props.data).map(dataKey => {
-              return (
-                <React.Fragment>
-                  <h6>{dataKey + ":"}</h6>
-                  <p>{this.props.data[dataKey]}</p>
-                </React.Fragment>
-              );
-            })}
+            <React.Fragment>
+              <h6>Name:</h6>
+              <p>{this.props.data["name"]}</p>
+              <h6>Class ID:</h6>
+              <p>{this.props.data["class_id"]}</p>
+              <h6>Professor:</h6>
+              <p>{this.props.data["professor"]}</p>
+            </React.Fragment>
           </Modal.Body>
           <Modal.Footer>
             {/** Create cancel and "add class" buttons at bottom of modal */}

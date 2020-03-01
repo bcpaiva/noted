@@ -1,14 +1,36 @@
 import React, { Component } from "react";
 import Title from "./components/header/Title";
 import TabBar from "./components/header/TabBar";
+import Login from "./components/login/Login";
+import { fetchClassData } from "./api/firebase";
 
 class App extends Component {
-  state = {};
+  state = {
+    loggedIn: true
+  };
+
+  componentWillMount() {
+    // Get classes from firebase and assign them to classData state
+    fetchClassData(classData =>
+      this.setState({
+        classData: classData
+      })
+    );
+  }
+
   render() {
+    // Don't render the app until data has been retrieved from firebase
+    if (!this.state.classData) {
+      return <div />;
+    }
     return (
       <React.Fragment>
         <Title />
-        <TabBar />
+        {this.state.loggedIn ? (
+          <TabBar classData={this.state.classData} />
+        ) : (
+          <Login />
+        )}
       </React.Fragment>
     );
   }

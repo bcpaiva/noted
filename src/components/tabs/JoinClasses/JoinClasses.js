@@ -2,33 +2,17 @@ import React, { Component } from "react";
 import ListSearch from "./tab_components/ListSearch";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
-import { getClasses } from "../../../api/firebase";
 
 class JoinClasses extends Component {
   /**
-   * Join Classes tab content housing component
+   * Join Classes tab content component
    */
-
-  constructor() {
-    super();
-    // Get classes from firebase and assign them to class list
-    getClasses(classData =>
-      this.setState({
-        classList: classData
-      })
-    );
-  }
 
   state = {
     showCreateClassAlert: false
   };
 
   render() {
-    // If firebase data hasn't been retrieved, don't render elements
-    if (!this.state.classList) {
-      return <div />;
-    }
-    // Else, render expected elements
     return (
       <React.Fragment>
         <div className="container text-center">
@@ -46,7 +30,7 @@ class JoinClasses extends Component {
 
           {/* List of classes with search bar */}
           <ListSearch
-            classList={this.state.classList}
+            classData={this.props.classData}
             placeholder="Search for Classes..."
           />
         </div>
