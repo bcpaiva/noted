@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import Title from "./components/header/Title";
 import TabBar from "./components/header/TabBar";
-import Login from "./components/login/Login";
+import LoginPage from "./components/login/LoginPage";
 import { fetchClassData } from "./api/firebase";
 
 class App extends Component {
   state = {
-    loggedIn: true
+    loggedIn: false
   };
 
   componentWillMount() {
@@ -29,7 +29,7 @@ class App extends Component {
         {this.state.loggedIn ? (
           <TabBar classData={this.state.classData} />
         ) : (
-          <Login />
+          <LoginPage />
         )}
       </React.Fragment>
     );
