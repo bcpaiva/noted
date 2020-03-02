@@ -15,41 +15,43 @@ class ListSearch extends Component {
   }
 
   state = {
-    filtered: [], // Classes currently filtered from search bar input
-    availableClasses: [], // All classes available to user
+    filtered: null, // Classes currently filtered from search bar input
+    availableClasses: null, // All classes available to user
     clicked: {}, // key: class name, value: whether or not they're selected
     showAlert: false // Default alert to off
   };
 
   //If component is created successfully,
   componentDidMount() {
-    //default filtered and availableClassses lists to entire list
     this.setState({
-      filtered: this.props.list,
-      availableClasses: this.props.list
+      filtered: this.props.classData,
+      availableClasses: this.props.classData
     });
+  }
+
+  componentDidCatch() {
     //Initialize clicked to false for all class objects
     let clickedObj = {};
-    this.props.list.map(item => {
-      return (clickedObj[item] = false);
+    Object.keys(this.state.availableClasses).map(classKey => {
+      return (clickedObj[classKey] = false);
     });
     this.setState({ clicked: clickedObj });
   }
 
   // Change value of clicked for certain class
-  updateClicked(classID, value) {
+  updateClicked(classKey, value) {
     this.setState(prevState => {
       let clicked = prevState.clicked;
-      clicked[classID] = value;
+      clicked[classKey] = value;
       return clicked;
     });
   }
 
   // Handle change to input in search bar
   handleChange(e) {
-    let currentList = [];
+    let currentList = {};
 
-    let newList = [];
+    let newList = {};
 
     // If the search bar isn't empty
     if (e.target.value !== "") {
@@ -58,13 +60,15 @@ class ListSearch extends Component {
 
       // Use .filter() to determine which items should be displayed
       // based on the search terms
-      newList = currentList.filter(item => {
-        const lc = item.toLowerCase();
-
-        const filter = e.target.value.toLowerCase();
-        // check to see if the current list item includes the search term
-        // If it does, it will be added to newList.
-        return lc.includes(filter);
+      const filter = e.target.value.toLowerCase();
+      Object.keys(currentList).map(classKey => {
+        if (
+          currentList[classKey]["data"]["Class ID"]
+            .toLowerCase()
+            .includes(filter)
+        ) {
+          newList[classKey] = currentList[classKey];
+        }
       });
     } else {
       // If the search bar is empty, set newList to original task list
@@ -77,27 +81,25 @@ class ListSearch extends Component {
   }
 
   // When a list element is clicked, set the element to clicked
-  handleClick(classID) {
-    this.updateClicked(classID, true);
+  handleClick(classKey) {
+    this.updateClicked(classKey, true);
   }
 
   // Reset button to unclicked if operation canceled
-  handleClose(classID) {
-    this.updateClicked(classID, false);
+  handleClose(classKey) {
+    this.updateClicked(classKey, false);
   }
 
   // TODO: Add class to user's class list if added
-  handleAdd(classID) {
-    this.updateClicked(classID, false);
+  handleAdd(classKey) {
+    this.updateClicked(classKey, false);
     // Remove class from available class
-    this.state.availableClasses.splice(
-      this.state.availableClasses.indexOf(classID),
-      1
-    );
+    delete this.state.availableClasses[classKey];
+
     // Remove class from clicked state
     this.setState(prevState => {
       let clicked = prevState.clicked;
-      delete clicked[classID];
+      delete clicked[classKey];
       return clicked;
     });
     // Show alert that class add was successful
@@ -114,6 +116,10 @@ class ListSearch extends Component {
   };
 
   render() {
+    // Don't render component until firebase data has been retrieved
+    if (!this.state.filtered) {
+      return <div />;
+    }
     return (
       <React.Fragment>
         {/* Show alert if showAlert is true */}
@@ -131,26 +137,43 @@ class ListSearch extends Component {
             onChange={this.handleChange}
             placeholder={this.props.placeholder || "Search..."} //Default="Search..."
           />
+          {/*Show modal to join class if clicked*/}
+          {Object.keys(this.state.filtered).map(classKey => {
+            return (
+              // If class was clicked, show add class modal
+              this.state.clicked[classKey] ? (
+                <JoinClassModal
+                  data={this.state.availableClasses[classKey]["data"]}
+                  key={classKey + "modal"}
+                  onClose={() => this.handleClose(classKey)}
+                  onAdd={() => this.handleAdd(classKey)}
+                />
+              ) : null
+            );
+          })}
           {/*Create list items dynamically based on filtered list*/}
-          {this.state.filtered.map(classID =>
-            // If class was clicked, show add class modal
-            this.state.clicked[classID] ? (
-              <JoinClassModal
-                key={classID + "_modal"}
-                onClose={() => this.handleClose(classID)}
-                onAdd={() => this.handleAdd(classID)}
-              />
-            ) : (
-              // If not, show class item in ListGroup
+          {Object.keys(this.state.filtered).map(classKey => {
+            return (
+              // Show each class item in ListGroup
               <ListGroup.Item
                 action
-                key={classID + "_listitem"}
-                onClick={() => this.handleClick(classID)}
+                key={classKey + "item"}
+                onClick={() => this.handleClick(classKey)}
               >
-                {classID}
+                <div className="row">
+                  <div className="col-sm" />
+                  <div className="col-sm text-center">
+                    {this.state.filtered[classKey]["data"]["class_id"]}
+                  </div>
+                  <div class=" col-sm text-right">
+                    <small>
+                      {this.state.filtered[classKey]["data"]["professor"]}
+                    </small>
+                  </div>
+                </div>
               </ListGroup.Item>
-            )
-          )}
+            );
+          })}
         </ListGroup>
       </React.Fragment>
     );
