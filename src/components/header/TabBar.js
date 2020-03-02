@@ -4,6 +4,7 @@ import Nav from "react-bootstrap/Nav";
 import JoinClasses from "../tabs/JoinClasses/JoinClasses";
 import MyClasses from "../tabs/MyClasses/MyClasses";
 import UploadNotes from "../tabs/UploadNotes/UploadNotes";
+import MyProfile from "../tabs/MyProfile/MyProfile";
 
 /**
  * This component renders the tab bar, and the corresponding tab content
@@ -19,7 +20,7 @@ class TabBar extends Component {
       "Join Classes": JoinClasses,
       "My Classes": MyClasses,
       "Upload Notes": UploadNotes,
-
+      "My Profile": MyProfile,
     }
   };
 
@@ -55,6 +56,9 @@ class TabBar extends Component {
           </Nav.Item>
           <Nav.Item>
             <Nav.Link eventKey="Upload Notes">Upload Notes</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="My Profile">My Profile</Nav.Link>
           </Nav.Item>
         </Nav>
         {/** Render proper tab content */}
