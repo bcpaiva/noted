@@ -6,7 +6,7 @@ import { fetchClassData } from "./api/firebase";
 
 class App extends Component {
   state = {
-    loggedIn: false
+    loggedIn: true
   };
 
   componentWillMount() {
