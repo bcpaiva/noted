@@ -4,6 +4,10 @@ import Button from "react-bootstrap/Button";
 
 /**
  * Bootstrap popup modal to show user more class information and allow them to add class
+ * PROPS:
+ *  onClick: click handle function
+ *  onAdd: add handle function
+ *  data: data object representing class information
  */
 
 class JoinClassModal extends Component {
@@ -16,8 +20,15 @@ class JoinClassModal extends Component {
             <Modal.Title>Add Class:</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {this.props.data ||
-              "No class data available at this time." /* TODO: Pull class data from Firebase */}
+            {/** Render class data in modal */}
+            <React.Fragment>
+              <h6>Name:</h6>
+              <p>{this.props.data["name"]}</p>
+              <h6>Class ID:</h6>
+              <p>{this.props.data["class_id"]}</p>
+              <h6>Professor:</h6>
+              <p>{this.props.data["professor"]}</p>
+            </React.Fragment>
           </Modal.Body>
           <Modal.Footer>
             {/** Create cancel and "add class" buttons at bottom of modal */}

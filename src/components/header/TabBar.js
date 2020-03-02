@@ -4,7 +4,7 @@ import Nav from "react-bootstrap/Nav";
 import JoinClasses from "../tabs/JoinClasses/JoinClasses";
 import MyClasses from "../tabs/MyClasses/MyClasses";
 import UploadNotes from "../tabs/UploadNotes/UploadNotes";
-import MyProfile from "../tabs/MyProfile/MyProfile";
+import MyProfile from "../tabs/MyProfile/MyProfile"
 
 /**
  * This component renders the tab bar, and the corresponding tab content
@@ -27,7 +27,7 @@ class TabBar extends Component {
   // Return the active tab as a react component
   getActiveTab() {
     const ActiveTab = this.state.activeTab;
-    return <ActiveTab />;
+    return <ActiveTab classData={this.props.classData} />;
   }
 
   // set active tab to proper tab

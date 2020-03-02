@@ -17,6 +17,20 @@ if (!firebase.apps.length) {
   firebase.initializeApp(config);
 }
 
-const db = firebase.firestore();
+const db = firebase.database();
 
-export { db };
+/**
+ * Retrieve class data from firebase.
+ * @param {function} callback Callback function that takes the retrieved data (classData) as a parameter
+ */
+let fetchClassData = callback => {
+  db.ref("classes").on("value", snapshot => {
+    callback(snapshot.val());
+  });
+};
+
+let createUser = (user_data, callback) => {
+  db.ref("users/" + user_data["user_id"]).set({});
+};
+
+export { fetchClassData };
