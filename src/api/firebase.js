@@ -17,6 +17,8 @@ if (!firebase.apps.length) {
   firebase.initializeApp(config);
 }
 
+const fb = firebase;
+
 const db = firebase.database();
 
 /**
@@ -33,4 +35,4 @@ let createUser = (user_data, callback) => {
   db.ref("users/" + user_data["user_id"]).set({});
 };
 
-export { fetchClassData };
+export { fetchClassData, db, fb };
