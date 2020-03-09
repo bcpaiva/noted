@@ -3,44 +3,62 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import CreateAccountModal from "./CreateAccountModal";
+import { withFirebase } from "../Firebase";
+import Alert from "react-bootstrap/Alert";
 
 class LoginPage extends Component {
   constructor() {
     super();
     this.handleCreateAccClick = this.handleCreateAccClick.bind(this);
     this.handleCreateAccClose = this.handleCreateAccClose.bind(this);
+    this.handleCreateAccSuccess = this.handleCreateAccSuccess.bind(this);
   }
 
   state = {
-    createAccount: false
+    showCreateAccount: false,
+    showSuccessAlert: false
   };
 
+  // Handle create account button click
   handleCreateAccClick() {
     this.setState({
-      createAccount: true
+      showCreateAccount: true
     });
   }
 
+  // Handle close create account modal
   handleCreateAccClose() {
     this.setState({
-      createAccount: false
+      showCreateAccount: false
     });
   }
 
-  //TODO
-  handleCreateAcc(e) {
-    console.log(e);
+  // Handle successful create account submit
+  handleCreateAccSuccess() {
+    this.setState({
+      showSuccessAlert: true,
+      showCreateAccount: false
+    });
   }
 
   render() {
     return (
       <div className="container mb-5">
-        {this.state.createAccount ? (
+        {/** If account created successfully show success alert */}
+        {this.state.showSuccessAlert ? (
+          <Alert className="mt-5" variant="success">
+            Account created successfully! Please log in below.
+          </Alert>
+        ) : null}
+        {/** If create account button clicked, show create account modal */}
+        {this.state.showCreateAccount ? (
           <CreateAccountModal
-            onCreate={this.handleCreateAcc}
             onClose={this.handleCreateAccClose}
+            onSubmit={this.handleCreateAccSubmit}
+            onSuccess={this.handleCreateAccSuccess}
           />
         ) : null}
+        {/** Login Page */}
         <Jumbotron className="mt-5 text-center">
           <h1>Welcome to Noted!</h1>
           <p>
@@ -48,6 +66,7 @@ class LoginPage extends Component {
             below.
           </p>
         </Jumbotron>
+        <div id="firebaseui-auth-container"></div>
         <div className="text-center h3">Login</div>
         <div class="row">
           <div class="col" />
@@ -81,4 +100,4 @@ class LoginPage extends Component {
   }
 }
 
-export default LoginPage;
+export default withFirebase(LoginPage);
