@@ -20,13 +20,15 @@ class App extends Component {
     });
   }
 
+  /* TEMPORARILY DISABLED: USELESS WITHOUT COOKIES
   componentWillMount() {
     // If user is not logged in, set state to false
     if (!this.props.firebase.getCurrentUser())
       this.setState({
         loggedIn: false
-      });
-  }
+      }); 
+  } 
+*/
 
   render() {
     return (
