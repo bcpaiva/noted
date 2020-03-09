@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ListSearch from "./tab_components/ListSearch";
-import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 
 class JoinClasses extends Component {
