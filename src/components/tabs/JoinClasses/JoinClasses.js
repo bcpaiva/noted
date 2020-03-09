@@ -29,10 +29,7 @@ class JoinClasses extends Component {
           <div className="h2">Join a Class</div>
 
           {/* List of classes with search bar */}
-          <ListSearch
-            classData={this.props.classData}
-            placeholder="Search for Classes..."
-          />
+          <ListSearch placeholder="Search for Classes..." />
         </div>
       </React.Fragment>
     );

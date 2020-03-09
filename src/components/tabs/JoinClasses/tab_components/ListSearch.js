@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import JoinClassModal from "./JoinClassModal";
 import Alert from "react-bootstrap/Alert";
+import { withFirebase } from "../../../Firebase";
 
 /**
  * This component renders a list of items that is searchable.  On list item click, a popup modal
@@ -18,15 +19,19 @@ class ListSearch extends Component {
     filtered: null, // Classes currently filtered from search bar input
     availableClasses: null, // All classes available to user
     clicked: {}, // key: class name, value: whether or not they're selected
-    showAlert: false // Default alert to off
+    showAlert: false, // Default alert to off
+    classData: null // All class data from firebase
   };
 
   //If component is created successfully,
   componentDidMount() {
-    this.setState({
-      filtered: this.props.classData,
-      availableClasses: this.props.classData
-    });
+    // Get classes from firebase and assign them to classData state
+    this.props.firebase.fetchClassData(classData =>
+      this.setState({
+        filtered: classData,
+        availableClasses: classData
+      })
+    );
   }
 
   componentDidCatch() {
@@ -180,4 +185,4 @@ class ListSearch extends Component {
   }
 }
 
-export default ListSearch;
+export default withFirebase(ListSearch);

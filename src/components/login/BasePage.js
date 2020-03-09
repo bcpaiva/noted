@@ -5,8 +5,9 @@ import Jumbotron from "react-bootstrap/Jumbotron";
 import CreateAccountModal from "./CreateAccountModal";
 import { withFirebase } from "../Firebase";
 import Alert from "react-bootstrap/Alert";
+import Login from "./Login";
 
-class LoginPage extends Component {
+class BasePage extends Component {
   constructor() {
     super();
     this.handleCreateAccClick = this.handleCreateAccClick.bind(this);
@@ -66,31 +67,8 @@ class LoginPage extends Component {
             below.
           </p>
         </Jumbotron>
-        <div id="firebaseui-auth-container"></div>
         <div className="text-center h3">Login</div>
-        <div class="row">
-          <div class="col" />
-          <div class="col-5">
-            <Form>
-              <Form.Group controlId="formEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="Enter email (ending in @syr.edu)"
-                />
-              </Form.Group>
-
-              <Form.Group controlId="formPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
-              </Form.Group>
-              <Button variant="primary" type="login">
-                Login
-              </Button>
-            </Form>
-          </div>
-          <div class="col" />
-        </div>
+        <Login></Login>
         <div className="mt-5 text-center">
           <div className="mb-2">Don't have an account?</div>
           <Button onClick={this.handleCreateAccClick}>Create Account</Button>
@@ -100,4 +78,4 @@ class LoginPage extends Component {
   }
 }
 
-export default withFirebase(LoginPage);
+export default withFirebase(BasePage);
