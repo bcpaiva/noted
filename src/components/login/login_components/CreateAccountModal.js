@@ -5,8 +5,19 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
-import { withFirebase } from "../Firebase";
+import { withFirebase } from "../../Firebase";
 import Alert from "react-bootstrap/Alert";
+
+const INITIAL_STATE = {
+  firstName: "", // first name form field
+  lastName: "", // last name form field
+  email: "", // email form field
+  password: "", // password form field
+  confirmPassword: "", // confirm password form field
+  username: "", // username form field
+  users: null, // user data from firebase
+  error: null // error log
+};
 
 class CreateAccountModal extends Component {
   constructor(props) {
@@ -16,16 +27,7 @@ class CreateAccountModal extends Component {
     this.handleValidation = this.handleValidation.bind(this);
   }
 
-  state = {
-    firstName: "", // first name form field
-    lastName: "", // last name form field
-    email: "", // email form field
-    password: "", // password form field
-    confirmPassword: "", // confirm password form field
-    username: "", // username form field
-    users: null, // user data from firebase
-    error: null // error log
-  };
+  state = { ...INITIAL_STATE };
 
   // Fetch user data for username verification
   componentWillMount() {
@@ -52,6 +54,7 @@ class CreateAccountModal extends Component {
           message: "First name can't contain special characters or numbers"
         }
       });
+      console.log("firstname");
       return false;
     }
     // Check if last name is only letters
@@ -61,6 +64,7 @@ class CreateAccountModal extends Component {
           message: "Last name can't contain special characters or numbers"
         }
       });
+      console.log("lastname");
       return false;
     }
     // Check if email is @syr.edu email
@@ -68,6 +72,7 @@ class CreateAccountModal extends Component {
       this.setState({
         error: { message: "Email must be @syr.edu email" }
       });
+      console.log("email");
       return false;
     }
     // Check if password and confirm password match
@@ -75,19 +80,23 @@ class CreateAccountModal extends Component {
       this.setState({
         error: { message: "Passwords do not match" }
       });
+      console.log("password");
       return false;
     }
     // Check if username is already in use
-    let inUse = Object.keys(this.state.users).map(userId => {
+    let inUse = false;
+    Object.keys(this.state.users).map(userId => {
       if (this.state.users[userId]["username"] === this.state.username) {
         this.setState({
           error: { message: "Username is taken" }
         });
-        return true;
+        console.log("username");
+        inUse = true;
       }
     });
     // If it's in use, return false for validation
     if (inUse) {
+      console.log("inuse");
       return false;
     }
 
@@ -100,7 +109,9 @@ class CreateAccountModal extends Component {
     e.preventDefault();
 
     // If validated, also validate with firebase authentication
-    if (this.handleValidation()) {
+    let validated = this.handleValidation();
+    console.log(validated);
+    if (validated) {
       this.props.firebase
         .doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
         .then(authUser => {
@@ -110,6 +121,7 @@ class CreateAccountModal extends Component {
             first_name: this.state.firstName,
             last_name: this.state.lastName
           });
+          this.setState({ ...INITIAL_STATE }); // Reset states for data integrity
           this.props.onSuccess();
         })
         .catch(error => {
@@ -132,6 +144,7 @@ class CreateAccountModal extends Component {
     if (!this.state.users) {
       return <div />;
     }
+    console.log(this.state.error);
 
     return (
       <Modal show={true} onHide={this.props.onClose}>
@@ -143,10 +156,7 @@ class CreateAccountModal extends Component {
           <Modal.Body>
             {/** Show error if error log is not empty */}
             {this.state.error && (
-              <Alert variant="danger">
-                {console.log(this.state.error)}
-                {this.state.error.message}
-              </Alert>
+              <Alert variant="danger">{this.state.error.message}</Alert>
             )}
             <small className="mb-4">{"* = required field"}</small>
             <Row>

@@ -22,11 +22,10 @@ class App extends Component {
 
   componentWillMount() {
     // If user is not logged in, set state to false
-    /* TEMPORARILY DISABLED
     if (!this.props.firebase.getCurrentUser())
       this.setState({
         loggedIn: false
-      }); */
+      });
   }
 
   render() {

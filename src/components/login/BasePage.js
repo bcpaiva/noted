@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import Button from "react-bootstrap/Button";
 import Jumbotron from "react-bootstrap/Jumbotron";
-import CreateAccountModal from "./CreateAccountModal";
+import CreateAccountModal from "./login_components/CreateAccountModal";
 import { withFirebase } from "../Firebase";
 import Alert from "react-bootstrap/Alert";
-import Login from "./Login";
+import Login from "./login_components/Login";
 
 class BasePage extends Component {
   constructor() {
@@ -12,6 +12,7 @@ class BasePage extends Component {
     this.handleCreateAccClick = this.handleCreateAccClick.bind(this);
     this.handleCreateAccClose = this.handleCreateAccClose.bind(this);
     this.handleCreateAccSuccess = this.handleCreateAccSuccess.bind(this);
+    this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
   }
 
   state = {
@@ -41,6 +42,10 @@ class BasePage extends Component {
     });
   }
 
+  handleLoginSubmit() {
+    this.props.onLogin();
+  }
+
   render() {
     return (
       <div className="container mb-5">
@@ -67,7 +72,7 @@ class BasePage extends Component {
           </p>
         </Jumbotron>
         <div className="text-center h3">Login</div>
-        <Login></Login>
+        <Login onLoginSubmit={this.handleLoginSubmit}></Login>
         <div className="mt-5 text-center">
           <div className="mb-2">Don't have an account?</div>
           <Button onClick={this.handleCreateAccClick}>Create Account</Button>
