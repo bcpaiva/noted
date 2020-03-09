@@ -67,11 +67,17 @@ class ListSearch extends Component {
       // based on the search terms
       const filter = e.target.value.toLowerCase();
       Object.keys(currentList).map(classKey => {
-        if (
-          currentList[classKey]["data"]["Class ID"]
+        // Check if search value contains class ID or Professor
+        let inSearch =
+          currentList[classKey]["data"]["class_id"]
             .toLowerCase()
-            .includes(filter)
-        ) {
+            .includes(filter) ||
+          currentList[classKey]["data"]["professor"]
+            .toLowerCase()
+            .includes(filter);
+
+        // Add to search list
+        if (inSearch) {
           newList[classKey] = currentList[classKey];
         }
       });
