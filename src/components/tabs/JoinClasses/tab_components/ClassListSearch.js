@@ -10,8 +10,8 @@ import { withFirebase } from "../../../Firebase";
  */
 
 class ClassListSearch extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -20,39 +20,42 @@ class ClassListSearch extends Component {
     availableClasses: null, // All classes available to user
     clicked: {}, // key: class name, value: whether or not they're selected
     showAlert: false, // Default alert to off
-    currentUserId: null, // uid of current user
+    currentUserId: this.props.currentUser // uid of current user
+      ? this.props.currentUser.uid
+      : null, // If not available, set to null
     error: null // error log
   };
 
-  //If component is created successfully,
+  // If component is created successfully,
   componentDidMount() {
     // Get classes from firebase and assign them to classData state
-    this.props.firebase.fetchClassData(classData =>
+    this.props.firebase.fetchClassData(data => {
+      let classData = data;
+      console.log(this.props.currentUser);
+
+      // Filter classData based on classes current user is already in
+      for (let key in classData) {
+        if (
+          classData[key]["students"] &&
+          classData[key]["students"].includes(this.state.currentUserId)
+        ) {
+          delete classData[key];
+        }
+      }
+
+      // Update filtered and available classes with new class data
       this.setState({
         filtered: classData,
         availableClasses: classData
-      })
-    );
-    // Get uid of current active user
-    let user = this.props.firebase.getCurrentUser();
-    if (user) {
-      this.setState({
-        currentUserId: this.props.firebase.getCurrentUser().uid
       });
-    } else {
-      this.setState({
-        error: { message: "User currently not signed in" }
-      });
-    }
-  }
 
-  componentDidCatch() {
-    //Initialize clicked to false for all class objects
-    let clickedObj = {};
-    Object.keys(this.state.availableClasses).map(classKey => {
-      return (clickedObj[classKey] = false);
+      // Initialize clicked to false for all class objects after firebase data has been received
+      let clickedObj = {};
+      for (let key in this.state.availableClasses) {
+        clickedObj[key] = false;
+      }
+      this.setState({ clicked: clickedObj });
     });
-    this.setState({ clicked: clickedObj });
   }
 
   // Change value of clicked for certain class
@@ -77,21 +80,18 @@ class ClassListSearch extends Component {
       // Use .filter() to determine which items should be displayed
       // based on the search terms
       const filter = e.target.value.toLowerCase();
-      Object.keys(currentList).map(classKey => {
+
+      for (let key in currentList) {
         // Check if search value contains class ID or Professor
         let inSearch =
-          currentList[classKey]["data"]["class_id"]
-            .toLowerCase()
-            .includes(filter) ||
-          currentList[classKey]["data"]["professor"]
-            .toLowerCase()
-            .includes(filter);
+          currentList[key]["data"]["class_id"].toLowerCase().includes(filter) ||
+          currentList[key]["data"]["professor"].toLowerCase().includes(filter);
 
         // Add to search list
         if (inSearch) {
-          newList[classKey] = currentList[classKey];
+          newList[key] = currentList[key];
         }
-      });
+      }
     } else {
       // If the search bar is empty, set newList to original task list
       newList = this.state.availableClasses;
@@ -117,8 +117,9 @@ class ClassListSearch extends Component {
     // Update clicked to turn off modal
     this.updateClicked(classKey, false);
 
-    // Remove class from available class
+    // Remove class from available class and filtered list
     delete this.state.availableClasses[classKey];
+    delete this.state.filtered[classKey];
 
     // Remove class from clicked state
     this.setState(prevState => {
@@ -143,17 +144,6 @@ class ClassListSearch extends Component {
   };
 
   render() {
-    // If an error occurs, show error alert
-    if (this.state.error) {
-      return (
-        <React.Fragment>
-          {this.state.error && (
-            <Alert variant="danger">{this.state.error.message}</Alert>
-          )}
-        </React.Fragment>
-      );
-    }
-
     // Don't render component until firebase data has been retrieved
     if (!this.state.filtered || !this.state.currentUserId) {
       return <React.Fragment />;

@@ -81,14 +81,16 @@ class CreateAccountModal extends Component {
     }
     // Check if username is already in use
     let inUse = false;
-    Object.keys(this.state.users).map(userId => {
+
+    for (let userId in this.state.users) {
       if (this.state.users[userId]["username"] === this.state.username) {
         this.setState({
           error: { message: "Username is taken" }
         });
         inUse = true;
       }
-    });
+    }
+
     // If it's in use, return false for validation
     if (inUse) {
       return false;

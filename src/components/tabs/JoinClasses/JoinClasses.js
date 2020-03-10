@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ClassListSearch from "./tab_components/ClassListSearch";
 import Alert from "react-bootstrap/Alert";
+import { AuthUserContext } from "../../Session";
 
 class JoinClasses extends Component {
   /**
@@ -17,7 +18,10 @@ class JoinClasses extends Component {
           <div className="h2">Join a Class</div>
 
           {/* List of classes with search bar */}
-          <ClassListSearch placeholder="Search by Class ID or Professor..." />
+          <AuthUserContext.Consumer>
+          {authUser =>
+          <ClassListSearch currentUser={authUser} placeholder="Search by Class ID or Professor..." />}
+          </AuthUserContext.Consumer>
         </div>
       </React.Fragment>
     );

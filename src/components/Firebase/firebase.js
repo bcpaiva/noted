@@ -46,20 +46,16 @@ class Firebase {
   // ****************
 
   /**
-   * Return current active user
-   */
-  getCurrentUser = () => {
-    return this.auth.currentUser;
-  };
-
-  /**
    * Retrieve class data from firebase.
    * @param {function} callback Callback function that takes the retrieved data (classData) as a parameter
    */
   fetchClassData = callback => {
+    let object = null;
     this.db.ref("classes").on("value", snapshot => {
+      object = snapshot.val();
       callback(snapshot.val());
     });
+    return object;
   };
 
   /**
