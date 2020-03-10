@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 /**
  * Bootstrap popup modal to show user more class information and allow them to add class
  * PROPS:
- *  onClick: click handle function
+ *  onClose: close handle function
  *  onAdd: add handle function
  *  data: data object representing class information
  */

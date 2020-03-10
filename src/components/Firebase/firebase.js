@@ -46,15 +46,10 @@ class Firebase {
   // ****************
 
   /**
-   * Return current user if there is one
+   * Return current active user
    */
   getCurrentUser = () => {
-    this.auth.onAuthStateChanged(function(user) {
-      if (user) {
-        return user;
-      }
-      return false;
-    });
+    return this.auth.currentUser;
   };
 
   /**
@@ -84,6 +79,44 @@ class Firebase {
     this.db.ref("users").on("value", snapshot => {
       callback(snapshot.val());
     });
+  };
+
+  /**
+   * Add user to class and vice versa
+   * @param {string} userId uid of user to add to class
+   * @param {string} classId unique class id of class to add (**NOT class_id**) ex: "UzIQ76RKyw4fSoann1Wg"
+   */
+  addUserToClass = (userId, classId) => {
+    ////////////////////////////////////////////
+    // Add class to user in database ///////////
+    ////////////////////////////////////////////
+    let currentClasses = [];
+    this.db.ref("users/" + userId).on("value", snapshot => {
+      // If user's classes is not empty, set it to currentClasses
+      if (snapshot.val().classes) {
+        currentClasses = snapshot.val().classes;
+      }
+    });
+    currentClasses.push(classId);
+
+    // Add class to user classes
+    this.db.ref("users/" + userId + "/classes").set(currentClasses);
+    //-------------------------------------------
+
+    /////////////////////////////////////////////
+    // Add user (student) to class in database///
+    /////////////////////////////////////////////
+    let currentStudents = [];
+    this.db.ref("classes/" + classId).on("value", snapshot => {
+      // If class's students is not empty, set it to currentStudents
+      if (snapshot.val().students) {
+        currentStudents = snapshot.val().students;
+      }
+    });
+    currentStudents.push(userId);
+
+    this.db.ref("classes/" + classId + "/students").set(currentStudents);
+    //-------------------------------------------
   };
 }
 export default Firebase;

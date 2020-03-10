@@ -44,9 +44,9 @@ class Login extends Component {
     // is invalid if email and password fields are empty
     const isInvalid = this.state.email === "" || this.state.password === "";
     return (
-      <div class="row">
-        <div class="col" />
-        <div class="col-5">
+      <div className="row">
+        <div className="col" />
+        <div className="col-5">
           <Form onSubmit={this.onSubmit}>
             {/** Show error if error log is not empty */}
             {this.state.error && (
@@ -76,7 +76,7 @@ class Login extends Component {
             </Button>
           </Form>
         </div>
-        <div class="col" />
+        <div className="col" />
       </div>
     );
   }

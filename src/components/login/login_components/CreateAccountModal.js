@@ -54,7 +54,6 @@ class CreateAccountModal extends Component {
           message: "First name can't contain special characters or numbers"
         }
       });
-      console.log("firstname");
       return false;
     }
     // Check if last name is only letters
@@ -64,7 +63,6 @@ class CreateAccountModal extends Component {
           message: "Last name can't contain special characters or numbers"
         }
       });
-      console.log("lastname");
       return false;
     }
     // Check if email is @syr.edu email
@@ -72,7 +70,6 @@ class CreateAccountModal extends Component {
       this.setState({
         error: { message: "Email must be @syr.edu email" }
       });
-      console.log("email");
       return false;
     }
     // Check if password and confirm password match
@@ -80,7 +77,6 @@ class CreateAccountModal extends Component {
       this.setState({
         error: { message: "Passwords do not match" }
       });
-      console.log("password");
       return false;
     }
     // Check if username is already in use
@@ -90,13 +86,11 @@ class CreateAccountModal extends Component {
         this.setState({
           error: { message: "Username is taken" }
         });
-        console.log("username");
         inUse = true;
       }
     });
     // If it's in use, return false for validation
     if (inUse) {
-      console.log("inuse");
       return false;
     }
 
@@ -110,16 +104,15 @@ class CreateAccountModal extends Component {
 
     // If validated, also validate with firebase authentication
     let validated = this.handleValidation();
-    console.log(validated);
     if (validated) {
       this.props.firebase
         .doCreateUserWithEmailAndPassword(this.state.email, this.state.password)
         .then(authUser => {
           // If user is authenticated, add extra user data to firebase
           this.props.firebase.addUserData(authUser.user.uid, {
-            username: this.state.username,
-            first_name: this.state.firstName,
-            last_name: this.state.lastName
+            username: this.state.username, // Username
+            first_name: this.state.firstName, // First name
+            last_name: this.state.lastName // Last name
           });
           this.setState({ ...INITIAL_STATE }); // Reset states for data integrity
           this.props.onSuccess();
@@ -144,7 +137,6 @@ class CreateAccountModal extends Component {
     if (!this.state.users) {
       return <div />;
     }
-    console.log(this.state.error);
 
     return (
       <Modal show={true} onHide={this.props.onClose}>

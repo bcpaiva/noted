@@ -11,7 +11,7 @@ class App extends Component {
   }
 
   state = {
-    loggedIn: true
+    loggedIn: false //TODO: Set to false for production
   };
 
   handleLogin() {

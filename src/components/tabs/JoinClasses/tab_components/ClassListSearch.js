@@ -9,7 +9,7 @@ import { withFirebase } from "../../../Firebase";
  * is rendered to show them additional class info and allow them to add the class to their classes.
  */
 
-class ListSearch extends Component {
+class ClassListSearch extends Component {
   constructor() {
     super();
     this.handleChange = this.handleChange.bind(this);
@@ -20,7 +20,8 @@ class ListSearch extends Component {
     availableClasses: null, // All classes available to user
     clicked: {}, // key: class name, value: whether or not they're selected
     showAlert: false, // Default alert to off
-    classData: null // All class data from firebase
+    currentUserId: null, // uid of current user
+    error: null // error log
   };
 
   //If component is created successfully,
@@ -32,6 +33,17 @@ class ListSearch extends Component {
         availableClasses: classData
       })
     );
+    // Get uid of current active user
+    let user = this.props.firebase.getCurrentUser();
+    if (user) {
+      this.setState({
+        currentUserId: this.props.firebase.getCurrentUser().uid
+      });
+    } else {
+      this.setState({
+        error: { message: "User currently not signed in" }
+      });
+    }
   }
 
   componentDidCatch() {
@@ -55,7 +67,6 @@ class ListSearch extends Component {
   // Handle change to input in search bar
   handleChange(e) {
     let currentList = {};
-
     let newList = {};
 
     // If the search bar isn't empty
@@ -103,7 +114,9 @@ class ListSearch extends Component {
 
   // TODO: Add class to user's class list if added
   handleAdd(classKey) {
+    // Update clicked to turn off modal
     this.updateClicked(classKey, false);
+
     // Remove class from available class
     delete this.state.availableClasses[classKey];
 
@@ -113,10 +126,13 @@ class ListSearch extends Component {
       delete clicked[classKey];
       return clicked;
     });
+
     // Show alert that class add was successful
     this.setState({
       showAlert: true
     });
+
+    this.props.firebase.addUserToClass(this.state.currentUserId, classKey);
   }
 
   // Hide alert when alert is closed
@@ -127,10 +143,22 @@ class ListSearch extends Component {
   };
 
   render() {
-    // Don't render component until firebase data has been retrieved
-    if (!this.state.filtered) {
-      return <div />;
+    // If an error occurs, show error alert
+    if (this.state.error) {
+      return (
+        <React.Fragment>
+          {this.state.error && (
+            <Alert variant="danger">{this.state.error.message}</Alert>
+          )}
+        </React.Fragment>
+      );
     }
+
+    // Don't render component until firebase data has been retrieved
+    if (!this.state.filtered || !this.state.currentUserId) {
+      return <React.Fragment />;
+    }
+
     return (
       <React.Fragment>
         {/* Show alert if showAlert is true */}
@@ -176,7 +204,7 @@ class ListSearch extends Component {
                   <div className="col-sm text-center">
                     {this.state.filtered[classKey]["data"]["class_id"]}
                   </div>
-                  <div class=" col-sm text-right">
+                  <div className=" col-sm text-right">
                     <small>
                       {this.state.filtered[classKey]["data"]["professor"]}
                     </small>
@@ -191,4 +219,4 @@ class ListSearch extends Component {
   }
 }
 
-export default withFirebase(ListSearch);
+export default withFirebase(ClassListSearch);
