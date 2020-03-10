@@ -6,7 +6,17 @@
         "name": "Systems Programming",
         "professor": "C. Mohan"
       },
-      "students": []
+      "students": [],
+      "lectures": {
+        "03-05-20": [
+          "<Image ID 1>",
+          "<Image ID 2>",
+          "<Image ID 3>",
+          "<Image ID 4>",
+          "<Image ID 5>",
+          "etc....."
+        ]
+      }
     },
     "iMhGeSl4v36s1D6ykvZS": {
       "data": {
@@ -14,9 +24,25 @@
         "name": "Principals of Social Media & Data Mining",
         "professor": "E. Yu"
       },
-      "students": []
+      "students": [],
+      "lectures": {
+        "03-05-20": [
+          "<Image ID 1>",
+          "<Image ID 2>",
+          "<Image ID 3>",
+          "<Image ID 4>",
+          "<Image ID 5>",
+          "etc....."
+        ]
+      }
     }
   },
-  "users": {},
-  "lectures": {}
+  "users": {
+    "<Randomly generated unique ID>": {
+      "username": "trevorpetrus",
+      "first_name": "Trevor",
+      "last_name": "Petrus",
+      "classes": ["UzIQ76RKyw4fSoann1Wg", "iMhGeSl4v36s1D6ykvZS", "etc..."]
+    }
+  }
 }

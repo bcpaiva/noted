@@ -1,39 +1,48 @@
 import React, { Component } from "react";
 import Title from "./components/header/Title";
 import TabBar from "./components/header/TabBar";
-import LoginPage from "./components/login/LoginPage";
-import { fetchClassData } from "./api/firebase";
+import BasePage from "./components/login/BasePage";
+import { withAuthentication } from "./components/Session";
 
 class App extends Component {
-  state = {
-    loggedIn: true
-  };
-
-  componentWillMount() {
-    // Get classes from firebase and assign them to classData state
-    fetchClassData(classData =>
-      this.setState({
-        classData: classData
-      })
-    );
+  constructor() {
+    super();
+    this.handleLogin = this.handleLogin.bind(this);
   }
 
+  state = {
+    loggedIn: true // Set to true to skip log-in page. (Disclaimer: User data won't be available)
+  };
+
+  // Set loggedIn state to true when there's a successful login
+  handleLogin() {
+    this.setState({
+      loggedIn: true
+    });
+  }
+
+  /* TEMPORARILY DISABLED: USELESS WITHOUT COOKIES
+  componentWillMount() {
+    // If user is not logged in, set state to false
+    if (!this.props.firebase.getCurrentUser())
+      this.setState({
+        loggedIn: false
+      }); 
+  } 
+*/
+
   render() {
-    // Don't render the app until data has been retrieved from firebase
-    if (!this.state.classData) {
-      return <div />;
-    }
     return (
       <React.Fragment>
         <Title />
         {this.state.loggedIn ? (
-          <TabBar classData={this.state.classData} />
+          <TabBar />
         ) : (
-          <LoginPage />
+          <BasePage onLogin={this.handleLogin} />
         )}
       </React.Fragment>
     );
   }
 }
 
-export default App;
+export default withAuthentication(App);
