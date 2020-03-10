@@ -2,18 +2,19 @@ import React, { Component } from "react";
 import Title from "./components/header/Title";
 import TabBar from "./components/header/TabBar";
 import BasePage from "./components/login/BasePage";
-import { withFirebase } from "./components/Firebase";
+import { withAuthentication } from "./components/Session";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.handleLogin = this.handleLogin.bind(this);
   }
 
   state = {
-    loggedIn: false //TODO: Set to false for production
+    loggedIn: true // Set to true to skip log-in page. (Disclaimer: User data won't be available)
   };
 
+  // Set loggedIn state to true when there's a successful login
   handleLogin() {
     this.setState({
       loggedIn: true
@@ -44,4 +45,4 @@ class App extends Component {
   }
 }
 
-export default withFirebase(App);
+export default withAuthentication(App);
