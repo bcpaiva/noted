@@ -114,5 +114,27 @@ class Firebase {
     this.db.ref("classes/" + classId + "/students").set(currentStudents);
     //-------------------------------------------
   };
-}
+
+
+  addNoteToClass = (noteId, classId) => {
+    let currentNotes = [];
+    this.db.ref("classes/" + classId).on("value", snapshot => {
+      // If class's students is not empty, set it to currentStudents
+      if (snapshot.val().notes) {
+        currentNotes = snapshot.val().notes;
+      }
+    });
+    currentNotes.push(noteId);
+
+    this.db.ref("classes/" + classId + "/data" + "/notes").set(currentNotes);
+    //-------------------------------------------
+  };
+ 
+};
+
+    /////////////////////////////////////////////
+    // Add image id to class information in database ///
+    /////////////////////////////////////////////
+
+
 export default Firebase;
