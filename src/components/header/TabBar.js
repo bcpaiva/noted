@@ -27,7 +27,7 @@ class TabBar extends Component {
   // Return the active tab as a react component
   getActiveTab() {
     const ActiveTab = this.state.activeTab;
-    return <ActiveTab />;
+    return <ActiveTab currentUser={this.props.currentUser} />;
   }
 
   // set active tab to proper tab

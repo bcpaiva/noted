@@ -6,13 +6,12 @@ import { withFirebase } from "../Firebase";
 import Alert from "react-bootstrap/Alert";
 import Login from "./login_components/Login";
 
-class BasePage extends Component {
+class LoginPage extends Component {
   constructor() {
     super();
     this.handleCreateAccClick = this.handleCreateAccClick.bind(this);
     this.handleCreateAccClose = this.handleCreateAccClose.bind(this);
     this.handleCreateAccSuccess = this.handleCreateAccSuccess.bind(this);
-    this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
   }
 
   state = {
@@ -42,10 +41,6 @@ class BasePage extends Component {
     });
   }
 
-  handleLoginSubmit() {
-    this.props.onLogin();
-  }
-
   render() {
     return (
       <div className="container mb-5">
@@ -59,7 +54,6 @@ class BasePage extends Component {
         {this.state.showCreateAccount ? (
           <CreateAccountModal
             onClose={this.handleCreateAccClose}
-            onSubmit={this.handleCreateAccSubmit}
             onSuccess={this.handleCreateAccSuccess}
           />
         ) : null}
@@ -72,7 +66,7 @@ class BasePage extends Component {
           </p>
         </Jumbotron>
         <div className="text-center h3">Login</div>
-        <Login onLoginSubmit={this.handleLoginSubmit}></Login>
+        <Login />
         <div className="mt-5 text-center">
           <div className="mb-2">Don't have an account?</div>
           <Button onClick={this.handleCreateAccClick}>Create Account</Button>
@@ -82,4 +76,4 @@ class BasePage extends Component {
   }
 }
 
-export default withFirebase(BasePage);
+export default withFirebase(LoginPage);
