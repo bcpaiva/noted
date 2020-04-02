@@ -66,7 +66,7 @@ class LoginPage extends Component {
           </p>
         </Jumbotron>
         <div className="text-center h3">Login</div>
-        <Login onLoginSubmit={this.props.onLogin}></Login>
+        <Login />
         <div className="mt-5 text-center">
           <div className="mb-2">Don't have an account?</div>
           <Button onClick={this.handleCreateAccClick}>Create Account</Button>

@@ -16,13 +16,12 @@ class RenderApp extends Component {
     return (
       <React.Fragment>
         <Title
-          onLogout={this.handleLogout}
           currentUser={this.props.currentUser}
         />
         {this.props.loggedIn ? (
           <TabBar currentUser={this.props.currentUser} />
         ) : (
-          <LoginPage onLogin={this.handleLogin} />
+          <LoginPage/>
         )}
       </React.Fragment>
     );
