@@ -28,7 +28,6 @@ class Login extends Component {
       .doSignInWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
         this.setState({ ...INITIAL_STATE }); // Reset states for data integrity
-        this.props.onLoginSubmit();
       })
       .catch(error => {
         this.setState({ error });

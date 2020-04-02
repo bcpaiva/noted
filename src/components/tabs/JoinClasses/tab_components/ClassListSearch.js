@@ -20,9 +20,9 @@ class ClassListSearch extends Component {
     availableClasses: null, // All classes available to user
     clicked: {}, // key: class name, value: whether or not they're selected
     showAlert: false, // Default alert to off
-    currentUserId: this.props.currentUser // uid of current user
-      ? this.props.currentUser.uid
-      : null, // If not available, set to null
+    currentUserId: this.props.currentUser // If user is logged in,
+      ? this.props.currentUser.uid // set to current user UID
+      : null, // If not, set to null
     error: null // error log
   };
 
@@ -112,7 +112,7 @@ class ClassListSearch extends Component {
     this.updateClicked(classKey, false);
   }
 
-  // TODO: Add class to user's class list if added
+  // Add user to class and adjust page accordingly
   handleAdd(classKey) {
     // Update clicked to turn off modal
     this.updateClicked(classKey, false);
