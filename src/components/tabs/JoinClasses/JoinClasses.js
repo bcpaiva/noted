@@ -29,3 +29,4 @@ class JoinClasses extends Component {
 }
 
 export default JoinClasses;
+

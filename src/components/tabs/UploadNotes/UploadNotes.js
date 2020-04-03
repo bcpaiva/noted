@@ -1,9 +1,12 @@
-import React from "react";
-import axios, { post } from "axios";
-//import { fb } from "../../Firebase";
+import React from 'react'
+import axios, { post } from 'axios';
+import firebase from 'firebase';
 import FileUploader from "react-firebase-file-uploader";
+import UploadClassList from "./UploadClassList.js";
+
 
 class UploadNotes extends React.Component {
+
   state = {
     username: "",
     avatar: "",
@@ -12,6 +15,8 @@ class UploadNotes extends React.Component {
     avatarURL: ""
   };
 
+  stateClasses = { list: ["CIS 425", "ECS 392", "CIS 444", "CSE 486"] }; // List of classes
+ 
   handleChangeUsername = event =>
     this.setState({ username: event.target.value });
   handleUploadStart = () => this.setState({ isUploading: true, progress: 0 });
@@ -22,18 +27,18 @@ class UploadNotes extends React.Component {
   };
   handleUploadSuccess = filename => {
     this.setState({ avatar: filename, progress: 100, isUploading: false });
-    /*
-    fb.storage()
+    firebase
+      .storage()
       .ref("images")
       .child(filename)
       .getDownloadURL()
-      .then(url => this.setState({ avatarURL: url })); */
+      .then(url => this.setState({ avatarURL: url }));
   };
-
+ 
   render() {
     return (
       <div>
-        <form>
+        {/* <form>
           <label>Username:</label>
           <input
             type="text"
@@ -47,16 +52,18 @@ class UploadNotes extends React.Component {
           <FileUploader
             accept="image/*"
             name="avatar"
-            filename={file => "tester"}
-            //storageRef={fb.storage().ref("images")}
+            filename={file =>"tester"}
+            storageRef={fb.storage().ref("images")}
             onUploadStart={this.handleUploadStart}
             onUploadError={this.handleUploadError}
             onUploadSuccess={this.handleUploadSuccess}
             onProgress={this.handleProgress}
           />
-        </form>
+        </form> */}
+        <UploadClassList list={this.stateClasses.list} />
       </div>
     );
   }
 }
 export default UploadNotes;
+
