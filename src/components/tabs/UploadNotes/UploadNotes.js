@@ -1,69 +1,60 @@
 import React from 'react'
 import axios, { post } from 'axios';
-import firebase from 'firebase';
 import FileUploader from "react-firebase-file-uploader";
 import UploadClassList from "./UploadClassList.js";
+import { withFirebase } from "../../Firebase";
+
 
 
 class UploadNotes extends React.Component {
 
+  constructor(props) {
+    super(props);
+  }
+
   state = {
-    username: "",
-    avatar: "",
-    isUploading: false,
-    progress: 0,
-    avatarURL: ""
+    classes: [],
+    classesIDs: [],
+    classMap: {}
+    
   };
 
-  stateClasses = { list: ["CIS 425", "ECS 392", "CIS 444", "CSE 486"] }; // List of classes
- 
-  handleChangeUsername = event =>
-    this.setState({ username: event.target.value });
-  handleUploadStart = () => this.setState({ isUploading: true, progress: 0 });
-  handleProgress = progress => this.setState({ progress });
-  handleUploadError = error => {
-    this.setState({ isUploading: false });
-    console.error(error);
-  };
-  handleUploadSuccess = filename => {
-    this.setState({ avatar: filename, progress: 100, isUploading: false });
-    firebase
-      .storage()
-      .ref("images")
-      .child(filename)
-      .getDownloadURL()
-      .then(url => this.setState({ avatarURL: url }));
-  };
+  componentDidMount() {
+
+  // Fetch data for current user
+ this.props.firebase.fetchUserData(data => {
+  let userData = data;
+  for (let key in userData) {
+    if (key == this.props.currentUser.uid){
+      // When user is found, set the classes array to classesIDs
+      let classIdentifiers = userData[key]["classes"]
+      this.props.firebase.fetchClassData(dataClass => {
+        let classData = dataClass;
+        for (let value in classIdentifiers){
+        var className = classData[classIdentifiers[value]]["data"]["class_id"];
+        if (!this.state.classes.indexOf(className) > -1){
+        this.state.classes = this.state.classes.concat(className)
+        const uniqueNames = Array.from(new Set(this.state.classes));
+        this.setState({classes: uniqueNames})
+        this.state.classMap[className] = classIdentifiers[value];
+        }
+        }
+      })
+      
+    } }})
+}
+
  
   render() {
+    if (!this.state.classes){
+      return <React.Fragment />;
+    }
     return (
       <div>
-        {/* <form>
-          <label>Username:</label>
-          <input
-            type="text"
-            value={this.state.username}
-            name="username"
-            onChange={this.handleChangeUsername}
-          />
-          <label>Avatar:</label>
-          {this.state.isUploading && <p>Progress: {this.state.progress}</p>}
-          {this.state.avatarURL && <img src={this.state.avatarURL} />}
-          <FileUploader
-            accept="image/*"
-            name="avatar"
-            filename={file =>"tester"}
-            storageRef={fb.storage().ref("images")}
-            onUploadStart={this.handleUploadStart}
-            onUploadError={this.handleUploadError}
-            onUploadSuccess={this.handleUploadSuccess}
-            onProgress={this.handleProgress}
-          />
-        </form> */}
-        <UploadClassList list={this.stateClasses.list} />
+        {/* */}
+        <UploadClassList list={this.state.classes} classMap={this.state.classMap}/>
       </div>
-    );
-  }
-}
-export default UploadNotes;
+    );};}
+
+export default withFirebase(UploadNotes);
 
