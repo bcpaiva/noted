@@ -3,9 +3,13 @@ import ListGroup from "react-bootstrap/ListGroup";
 import UploadClassModal from "./UploadClassModal";
 
 class UploadClassList extends Component {
-  state = { clicked: {} };
+  state = { clicked: {},
+  classMap: this.props.classMap
+
+};
 
   componentDidMount() {
+    console.log("uploadclasslist map", this.state.classMap)
     let clickedObj = {};
     this.props.list.map(item => {
       return (clickedObj[item] = false);
@@ -47,8 +51,8 @@ class UploadClassList extends Component {
         {this.props.list.map(classID =>
           this.state.clicked[classID] ? (
             <UploadClassModal
+              classMap={this.state.classMap}
               theClass={classID}
-              key={classID + "_modal"}
               onCancel={() => this.handleCancel(classID)}
               onAdd={() => this.handleNote(classID)}
               

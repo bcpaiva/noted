@@ -187,8 +187,7 @@ class ClassListSearch extends Component {
               <ListGroup.Item
                 action
                 key={classKey + "item"}
-                onClick={() => this.handleClick(classKey)}
-              >
+                onClick={() => this.handleClick(classKey)}>
                 <div className="row">
                   <div className="col-sm" />
                   <div className="col-sm text-center">

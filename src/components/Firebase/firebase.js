@@ -27,6 +27,8 @@ class Firebase {
 
     // Firebase realtime database object
     this.db = app.database();
+
+    this.storage = app.storage();
   }
 
   // *** Built-in Firebase Auth API Functions ***
@@ -115,26 +117,33 @@ class Firebase {
     //-------------------------------------------
   };
 
+    /////////////////////////////////////////////
+    // Add image id to class information in database ///
+    /////////////////////////////////////////////
 
   addNoteToClass = (noteId, classId) => {
     let currentNotes = [];
     this.db.ref("classes/" + classId).on("value", snapshot => {
-      // If class's students is not empty, set it to currentStudents
-      if (snapshot.val().notes) {
-        currentNotes = snapshot.val().notes;
+      console.log(snapshot.val().data.notes)
+      if (snapshot.val().data.notes) {
+        currentNotes = snapshot.val().data.notes;
       }
     });
     currentNotes.push(noteId);
-
+    console.log("currentNotes",currentNotes,"noteID",noteId);
     this.db.ref("classes/" + classId + "/data" + "/notes").set(currentNotes);
     //-------------------------------------------
   };
- 
-};
 
     /////////////////////////////////////////////
     // Add image id to class information in database ///
     /////////////////////////////////////////////
 
+    getNoteUrl = (noteID) => {
+      let path = "classnotes/" + noteID + ".png";
+      var pathRef = this.storage.ref(path);
+      return pathRef
+    }
+};
 
 export default Firebase;

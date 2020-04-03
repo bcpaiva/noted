@@ -9,8 +9,15 @@ import { withFirebase } from "../../Firebase";
 
 class UploadClassModal extends Component {
   state = {
-  modalClassId: this.props.classID
+  progress: 0,
+  classMap: this.props.classMap,
+  randomId: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+
   };
+
+  componentDidMount(){
+    console.log("classmap",this.state.classMap)
+  }
 
   handleChangeUsername = event =>
     this.setState({ username: event.target.value });
@@ -20,32 +27,16 @@ class UploadClassModal extends Component {
     this.setState({ isUploading: false });
     console.error(error);
   };
+
   handleUploadSuccess = filename => {
-    this.setState({ avatar: filename, progress: 100, isUploading: false });
+    this.setState({progress: 100});
     firebase
       .storage()
       .ref("images")
       .child(filename)
-      .getDownloadURL()
-      .then(url => this.setState({ avatarURL: url }));
-      // const UploadClassModal = () => {
-      //   const alert = useAlert()
-      //   alert.show('Oh look, an alert!')
-      // }
-      // const alert = alert.show('Some message', {
-      //   timeout: 2000, // custom timeout just for this one alert
-      //   type: 'success',
-      //   onOpen: () => {
-      //     console.log('hey')
-      //   }, // callback that will be executed after this alert open
-      //   onClose: () => {
-      //     console.log('closed')
-      //   } // callback that will be executed after this alert is removed
-      // })
-    console.log("success");
-    console.log(this.props.key);
+    console.log("printing",this.state.classMap);
 
-    this.props.firebase.addNoteToClass("noteid1","UzIQ76RKyw4fSoann1Wg");
+    this.props.firebase.addNoteToClass(this.state.randomId,this.state.classMap[this.props.theClass]);
   };
   render() {
     return (
@@ -55,15 +46,16 @@ class UploadClassModal extends Component {
     <Modal.Title>Choose an image file from your device to upload for {this.props.theClass}.</Modal.Title>
           </Modal.Header>
           <Modal.Body>
+    <div><p>Upload progress: {this.state.progress}%</p></div>
+
             {this.props.data ||
             <div>
            {/* < button type="button" class="btn btn-primary">Choose file</button> */}
            {/* <input type="text" class="form-control input-lg" name="email" value="Input name of"></input> */}
            <FileUploader
             accept="image/*"
-            name="avatar"
-            filename={file =>"newnote"}
-            storageRef={firebase.storage().ref("mynotes")}
+            filename={file =>this.state.randomId}
+            storageRef={firebase.storage().ref("classnotes")}
             onUploadStart={this.handleUploadStart}
             onUploadError={this.handleUploadError}
             onUploadSuccess={this.handleUploadSuccess}
@@ -78,7 +70,7 @@ class UploadClassModal extends Component {
               Cancel
             </Button>
             <Button variant="primary" onClick={this.props.onAdd}>
-              Upload Notes
+              Done
             </Button>
           </Modal.Footer>
         </Modal>
