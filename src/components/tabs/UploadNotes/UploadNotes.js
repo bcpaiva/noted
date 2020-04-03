@@ -1,6 +1,5 @@
 import React from 'react'
 import axios, { post } from 'axios';
-import firebase from 'firebase';
 import FileUploader from "react-firebase-file-uploader";
 import UploadClassList from "./UploadClassList.js";
 import { withFirebase } from "../../Firebase";
