@@ -180,14 +180,23 @@ class ClassListSearch extends Component {
               ) : null
             );
           })}
+
           {/*Create list items dynamically based on filtered list*/}
+          {console.log("filtered: ", this.state.availableClasses)}
+
+          {/** If there are no classes available, show message */}
+          {Object.keys(this.state.filtered).length == 0 ? (
+            <p>No classes available</p>
+          ) : null}
+
           {Object.keys(this.state.filtered).map(classKey => {
             return (
               // Show each class item in ListGroup
               <ListGroup.Item
                 action
                 key={classKey + "item"}
-                onClick={() => this.handleClick(classKey)}>
+                onClick={() => this.handleClick(classKey)}
+              >
                 <div className="row">
                   <div className="col-sm" />
                   <div className="col-sm text-center">
