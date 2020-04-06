@@ -154,6 +154,20 @@ class Firebase {
      callback(snapshot.val());
    });
  };
+
+ /**Retrieve username*/
+ setUsername = (uid, username, callback) => {
+  let userdata = {}
+  this.db.ref("users/" + uid).on("value", (snapshot) => {
+    userdata = snapshot.val()
+    console.log(userdata)
+  })
+  this.db.ref("users/" + uid).set(userdata)
+  .then(() => {
+     callback();
+ });
+};
+
 }
 
 export default Firebase;
