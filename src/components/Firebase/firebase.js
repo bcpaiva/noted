@@ -14,7 +14,7 @@ const config = {
   storageBucket: "noted-24e52.appspot.com",
   messagingSenderId: "85650534633",
   appId: "1:85650534633:web:e545957dd77ea2949c4078",
-  measurementId: "G-TFF9KXG0LL"
+  measurementId: "G-TFF9KXG0LL",
 };
 
 class Firebase {
@@ -41,9 +41,10 @@ class Firebase {
 
   doSignOut = () => this.auth.signOut();
 
-  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+  doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
 
-  doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
+  doPasswordUpdate = (password) =>
+    this.auth.currentUser.updatePassword(password);
 
   // ****************
 
@@ -51,9 +52,9 @@ class Firebase {
    * Retrieve class data from firebase.
    * @param {function} callback Callback function that takes the retrieved data (classData) as a parameter
    */
-  fetchClassData = callback => {
+  fetchClassData = (callback) => {
     let object = null;
-    this.db.ref("classes").on("value", snapshot => {
+    this.db.ref("classes").on("value", (snapshot) => {
       object = snapshot.val();
       callback(snapshot.val());
     });
@@ -73,8 +74,8 @@ class Firebase {
    * Retrieve user data from firebase
    * @param {function} callback Callback function to be invoked after data is fetched
    */
-  fetchUserData = callback => {
-    this.db.ref("users").on("value", snapshot => {
+  fetchUserData = (callback) => {
+    this.db.ref("users").on("value", (snapshot) => {
       callback(snapshot.val());
     });
   };
@@ -89,7 +90,7 @@ class Firebase {
     // Add class to user in database ///////////
     ////////////////////////////////////////////
     let currentClasses = [];
-    this.db.ref("users/" + userId).on("value", snapshot => {
+    this.db.ref("users/" + userId).on("value", (snapshot) => {
       // If user's classes is not empty, set it to currentClasses
       if (snapshot.val().classes) {
         currentClasses = snapshot.val().classes;
@@ -105,7 +106,7 @@ class Firebase {
     // Add user (student) to class in database///
     /////////////////////////////////////////////
     let currentStudents = [];
-    this.db.ref("classes/" + classId).on("value", snapshot => {
+    this.db.ref("classes/" + classId).on("value", (snapshot) => {
       // If class's students is not empty, set it to currentStudents
       if (snapshot.val().students) {
         currentStudents = snapshot.val().students;
@@ -123,7 +124,7 @@ class Firebase {
 
   addNoteToClass = (noteId, classId) => {
     let currentNotes = [];
-    this.db.ref("classes/" + classId).on("value", snapshot => {
+    this.db.ref("classes/" + classId).on("value", (snapshot) => {
       console.log(snapshot.val().data.notes);
       if (snapshot.val().data.notes) {
         currentNotes = snapshot.val().data.notes;
@@ -139,35 +140,29 @@ class Firebase {
   // Add image id to class information in database ///
   /////////////////////////////////////////////
 
-  getNoteUrl = noteID => {
+  getNoteUrl = (noteID) => {
     let path = "classnotes/" + noteID;
     var pathRef = this.storage.ref(path);
     return pathRef;
   };
 
   /**
-  * Retrieve single user's data from firebase
-  * @param {function} callback Callback function to be invoked after data is fetched
-  */
- fetchSingleUserData = (uid, callback) => {
-   this.db.ref("users/" + uid).on("value", (snapshot) => {
-     callback(snapshot.val());
-   });
- };
+   * Retrieve single user's data from firebase
+   * @param {function} callback Callback function to be invoked after data is fetched
+   */
+  fetchSingleUserData = (uid, callback) => {
+    this.db.ref("users/" + uid).on("value", (snapshot) => {
+      callback(snapshot.val());
+    });
+  };
 
- /**Retrieve username*/
- setUsername = (uid, username, callback) => {
-  let userdata = {}
-  this.db.ref("users/" + uid).on("value", (snapshot) => {
-    userdata = snapshot.val()
-    console.log(userdata)
-  })
-  this.db.ref("users/" + uid).set(userdata)
-  .then(() => {
-     callback();
- });
-};
-
+  /**Set username*/
+  setUsername = (uid, username, callback) => {
+    this.db
+      .ref("users/" + uid)
+      .update({ username: username })
+      .then(callback());
+  };
 }
 
 export default Firebase;
