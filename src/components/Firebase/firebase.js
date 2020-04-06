@@ -144,6 +144,16 @@ class Firebase {
     var pathRef = this.storage.ref(path);
     return pathRef;
   };
+
+  /**
+  * Retrieve single user's data from firebase
+  * @param {function} callback Callback function to be invoked after data is fetched
+  */
+ fetchSingleUserData = (uid, callback) => {
+   this.db.ref("users/" + uid).on("value", (snapshot) => {
+     callback(snapshot.val());
+   });
+ };
 }
 
 export default Firebase;

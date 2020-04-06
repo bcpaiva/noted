@@ -16,6 +16,7 @@ class RenderApp extends Component {
     return (
       <React.Fragment>
         <Title
+          loggedIn = {this.props.loggedIn}
           currentUser={this.props.currentUser}
         />
         {this.props.loggedIn ? (

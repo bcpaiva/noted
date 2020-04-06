@@ -17,10 +17,11 @@ class TabBar extends Component {
 
     // All tabs where key = eventKey, and content = corresponding react component
     tabs: {
+      "My Profile": MyProfile,
       "Join Classes": JoinClasses,
       "My Classes": MyClasses,
       "Upload Notes": UploadNotes,
-      "My Profile": MyProfile
+
     }
   };
 
@@ -49,6 +50,9 @@ class TabBar extends Component {
         >
           {/** Each tab bar item */}
           <Nav.Item>
+              <Nav.Link eventKey="My Profile">My Profile</Nav.Link>
+            </Nav.Item>
+          <Nav.Item>
             <Nav.Link eventKey="Join Classes">Join Classes</Nav.Link>
           </Nav.Item>
           <Nav.Item>
@@ -56,9 +60,6 @@ class TabBar extends Component {
           </Nav.Item>
           <Nav.Item>
             <Nav.Link eventKey="Upload Notes">Upload Notes</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="My Profile">My Profile</Nav.Link>
           </Nav.Item>
         </Nav>
         {/** Render proper tab content */}
