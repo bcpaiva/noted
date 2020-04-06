@@ -13,16 +13,15 @@ import MyProfile from "../tabs/MyProfile/MyProfile";
 class TabBar extends Component {
   state = {
     // Current active tab
-    activeTab: JoinClasses,
+    activeTab: MyClasses,
 
     // All tabs where key = eventKey, and content = corresponding react component
     tabs: {
-      "My Profile": MyProfile,
-      "Join Classes": JoinClasses,
       "My Classes": MyClasses,
+      "Join Classes": JoinClasses,
       "Upload Notes": UploadNotes,
-
-    }
+      "My Profile": MyProfile,
+    },
   };
 
   // Return the active tab as a react component
@@ -32,9 +31,9 @@ class TabBar extends Component {
   }
 
   // set active tab to proper tab
-  handleSelect = eventKey => {
+  handleSelect = (eventKey) => {
     this.setState({
-      activeTab: this.state.tabs[eventKey]
+      activeTab: this.state.tabs[eventKey],
     });
   };
 
@@ -45,21 +44,21 @@ class TabBar extends Component {
         <Nav
           className="navbar-light bg-light text-white pl-5 pt-2"
           variant="tabs"
-          defaultActiveKey="Join Classes"
+          defaultActiveKey="My Classes"
           onSelect={this.handleSelect}
         >
           {/** Each tab bar item */}
           <Nav.Item>
-              <Nav.Link eventKey="My Profile">My Profile</Nav.Link>
-            </Nav.Item>
+            <Nav.Link eventKey="My Classes">My Classes</Nav.Link>
+          </Nav.Item>
           <Nav.Item>
             <Nav.Link eventKey="Join Classes">Join Classes</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="My Classes">My Classes</Nav.Link>
+            <Nav.Link eventKey="Upload Notes">Upload Notes</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="Upload Notes">Upload Notes</Nav.Link>
+            <Nav.Link eventKey="My Profile">My Profile</Nav.Link>
           </Nav.Item>
         </Nav>
         {/** Render proper tab content */}
