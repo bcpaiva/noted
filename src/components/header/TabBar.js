@@ -4,7 +4,7 @@ import Nav from "react-bootstrap/Nav";
 import JoinClasses from "../tabs/JoinClasses/JoinClasses";
 import MyClasses from "../tabs/MyClasses/MyClasses";
 import UploadNotes from "../tabs/UploadNotes/UploadNotes";
-import MyProfile from "../tabs/MyProfile/MyProfile"
+import MyProfile from "../tabs/MyProfile/MyProfile";
 
 /**
  * This component renders the tab bar, and the corresponding tab content
@@ -13,27 +13,27 @@ import MyProfile from "../tabs/MyProfile/MyProfile"
 class TabBar extends Component {
   state = {
     // Current active tab
-    activeTab: JoinClasses,
+    activeTab: MyClasses,
 
     // All tabs where key = eventKey, and content = corresponding react component
     tabs: {
-      "Join Classes": JoinClasses,
       "My Classes": MyClasses,
+      "Join Classes": JoinClasses,
       "Upload Notes": UploadNotes,
       "My Profile": MyProfile,
-    }
+    },
   };
 
   // Return the active tab as a react component
   getActiveTab() {
     const ActiveTab = this.state.activeTab;
-    return <ActiveTab classData={this.props.classData} />;
+    return <ActiveTab currentUser={this.props.currentUser} />;
   }
 
   // set active tab to proper tab
-  handleSelect = eventKey => {
+  handleSelect = (eventKey) => {
     this.setState({
-      activeTab: this.state.tabs[eventKey]
+      activeTab: this.state.tabs[eventKey],
     });
   };
 
@@ -44,15 +44,15 @@ class TabBar extends Component {
         <Nav
           className="navbar-light bg-light text-white pl-5 pt-2"
           variant="tabs"
-          defaultActiveKey="Join Classes"
+          defaultActiveKey="My Classes"
           onSelect={this.handleSelect}
         >
           {/** Each tab bar item */}
           <Nav.Item>
-            <Nav.Link eventKey="Join Classes">Join Classes</Nav.Link>
+            <Nav.Link eventKey="My Classes">My Classes</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="My Classes">My Classes</Nav.Link>
+            <Nav.Link eventKey="Join Classes">Join Classes</Nav.Link>
           </Nav.Item>
           <Nav.Item>
             <Nav.Link eventKey="Upload Notes">Upload Notes</Nav.Link>

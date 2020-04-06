@@ -1,30 +1,31 @@
-import React, { Component } from 'react';
-import { Button, NavDropdown, Navbar, Nav, NavItem } from 'react-bootstrap';
-import { MenuItem, DropdownMenu } from 'react-bootstrap-dropdown-menu';
+import React, { Component } from "react";
+import { Button, NavDropdown, Navbar, Nav, NavItem } from "react-bootstrap";
+import { MenuItem, DropdownMenu } from "react-bootstrap-dropdown-menu";
+import LogoutItem from "./header_components/LogoutItem";
+import MyClasses from "../tabs/MyClasses/MyClasses";
+import MyProfile from "../tabs/MyProfile/MyProfile";
+import LoginHeader from "./header_components/LoginHeader";
 
 class Title extends Component {
 
+
   render() {
+    if (this.props.loggedIn && !this.props.currentUser){
+      return <div />;
+    }
     return (
-      <>
       <Navbar bg="primary" variant="dark">
-    <Navbar.Brand href="#home">NOTED</Navbar.Brand>
-    <Nav className="mr-auto">
-     <Nav.Link href="#home">Home</Nav.Link>
-    <NavDropdown title="Settings" id="basic-nav-dropdown">
-        <NavDropdown.Item href="profile">Edit Profile</NavDropdown.Item>
-        <NavDropdown.Item href="profile">Change Password</NavDropdown.Item>
-        <NavDropdown.Item href="profile">Account Settings</NavDropdown.Item>
-        <NavDropdown.Divider />
-        <NavDropdown.Item href="profile">Logout</NavDropdown.Item>
-      </NavDropdown>
-</Nav>
-  </Navbar>
-  </>
-
-);
+        <Navbar.Brand href="#home">NOTED</Navbar.Brand>
+        <Nav className="mr-auto">
+        {this.props.loggedIn ?  (
+      <React.Fragment >
+          <LoginHeader currentUser={this.props.currentUser}/>
+      </React.Fragment >
+        ): null}
+        </Nav>
+      </Navbar>
+    );
+  }
 }
-}
-
 
 export default Title;

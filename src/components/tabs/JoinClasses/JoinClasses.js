@@ -1,38 +1,27 @@
 import React, { Component } from "react";
-import ListSearch from "./tab_components/ListSearch";
-import Button from "react-bootstrap/Button";
+import ClassListSearch from "./tab_components/ClassListSearch";
 import Alert from "react-bootstrap/Alert";
+import { AuthUserContext } from "../../Session";
 
 class JoinClasses extends Component {
   /**
    * Join Classes tab content component
    */
 
-  state = {
-    showCreateClassAlert: false
-  };
+  state = {};
 
   render() {
     return (
       <React.Fragment>
         <div className="container text-center">
-          {this.state.showCreateClassAlert ? (
-            <Alert
-              variant="success"
-              onClose={this.handleCreateClassAlertClose}
-              dismissible
-            >
-              <p1>Class successfully created.</p1>
-            </Alert>
-          ) : null}
-          {/* Header for JoinClasses including title and create class button */}
+          {/* Header for JoinClasses including title */}
           <div className="h2">Join a Class</div>
 
           {/* List of classes with search bar */}
-          <ListSearch
-            classData={this.props.classData}
-            placeholder="Search for Classes..."
-          />
+          <AuthUserContext.Consumer>
+          {authUser =>
+          <ClassListSearch currentUser={authUser} placeholder="Search by Class ID or Professor..." />}
+          </AuthUserContext.Consumer>
         </div>
       </React.Fragment>
     );
@@ -40,3 +29,4 @@ class JoinClasses extends Component {
 }
 
 export default JoinClasses;
+

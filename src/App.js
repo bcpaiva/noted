@@ -1,39 +1,22 @@
 import React, { Component } from "react";
-import Title from "./components/header/Title";
-import TabBar from "./components/header/TabBar";
-import LoginPage from "./components/login/LoginPage";
-import { fetchClassData } from "./api/firebase";
+import { withAuthentication, AuthUserContext } from "./components/Session";
+import RenderApp from "./components/pageFramework/RenderApp";
 
 class App extends Component {
-  state = {
-    loggedIn: true
-  };
-
-  componentWillMount() {
-    // Get classes from firebase and assign them to classData state
-    fetchClassData(classData =>
-      this.setState({
-        classData: classData
-      })
-    );
-  }
+  state = {};
 
   render() {
-    // Don't render the app until data has been retrieved from firebase
-    if (!this.state.classData) {
-      return <div />;
-    }
     return (
-      <React.Fragment>
-        <Title />
-        {this.state.loggedIn ? (
-          <TabBar classData={this.state.classData} />
-        ) : (
-          <LoginPage />
+      <AuthUserContext.Consumer>
+        {authUser => (
+          <RenderApp
+            currentUser={authUser}
+            loggedIn={authUser ? true : false}
+          />
         )}
-      </React.Fragment>
+      </AuthUserContext.Consumer>
     );
   }
 }
 
-export default App;
+export default withAuthentication(App);
