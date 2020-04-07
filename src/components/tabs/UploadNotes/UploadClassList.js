@@ -110,7 +110,6 @@ class UploadClassList extends Component {
                 onAdd={() => this.handleNote(classID)}
                 onFailure={error => this.handleFailure(classID, error)}
 
-                // modalClassId = classID;
               />
             ) : (
               <ListGroup.Item action onClick={() => this.handleClick(classID)}>
