@@ -7,6 +7,9 @@ import { withFirebase } from "../../Firebase";
 import ProgressBar from "react-bootstrap/ProgressBar";
 
 class UploadClassModal extends Component {
+
+  // Set state variables
+  // Random Id generates a random id to be used to assign to the uploaded images
   state = {
     progress: 0,
     classMap: this.props.classMap,
@@ -16,20 +19,18 @@ class UploadClassModal extends Component {
         .substring(2, 15) +
       Math.random()
         .toString(36)
-        .substring(2, 15)
+        .substring(2, 15),
   };
 
-  componentDidMount() {
-    console.log("classmap", this.state.classMap);
-  }
 
-  handleChangeUsername = event =>
-    this.setState({ username: event.target.value });
+// Initialize upload functions
   handleUploadStart = () => this.setState({ isUploading: true, progress: 0 });
   handleProgress = progress => this.setState({ progress });
   handleUploadError = error => {
     this.setState({ isUploading: false });
+
     // If user canceled upload, give canceled notification. Else, show error message
+    
     let errorMessage =
       error["code"] == "storage/canceled"
         ? "Upload canceled."
@@ -38,6 +39,8 @@ class UploadClassModal extends Component {
     console.error(error);
   };
 
+  // Called when image is successfully uploaded
+
   handleUploadSuccess = filename => {
     console.log(filename);
     this.setState({ progress: 100 });
@@ -45,7 +48,8 @@ class UploadClassModal extends Component {
       .storage()
       .ref("images")
       .child(filename);
-    console.log("printing", this.state.classMap);
+
+    // Upload note to class using FB export
 
     this.props.firebase.addNoteToClass(
       filename,
@@ -67,8 +71,6 @@ class UploadClassModal extends Component {
           <Modal.Body>
             {this.props.data || (
               <div>
-                {/* < button type="button" class="btn btn-primary">Choose file</button> */}
-                {/* <input type="text" class="form-control input-lg" name="email" value="Input name of"></input> */}
                 <label className="btn btn-primary">
                   Upload Note
                   <FileUploader

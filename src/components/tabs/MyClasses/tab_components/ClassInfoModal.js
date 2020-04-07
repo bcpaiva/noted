@@ -7,22 +7,25 @@ import { withFirebase } from "../../../Firebase";
 
 
 class ClassInfoModal extends Component {
-  
-  convertToUrl = (pathValue) => {
-
-  }
-
+ 
   componentDidMount(){
     const self = this;
+
+    // Get class data from FB
     this.props.firebase.fetchClassData(data => {
       let classData = data;
-      console.log("classdata",data);
+
+      // Iterate through all of the class data until the correct match is found
       for (let key in classData){
         if (classData[key]["data"]["class_id"] == this.state.className){
         let allNotes = classData[key]["data"]["notes"]
         for (let note in allNotes){
+
+          // Get correct FB url to download the image 
           let imageUrl = this.props.firebase.getNoteUrl(allNotes[note]);
           imageUrl.getDownloadURL().then(function (url){
+
+            // Update the list of images that will be displayed in the Carousel
             self.setState({allImages: self.state.allImages.concat(url)})
            });
         }
@@ -44,7 +47,6 @@ class ClassInfoModal extends Component {
     for (let image in this.state.allImages) {
         items.push( <div>
           <img src={this.state.allImages[image]} />
-          <p className="legend">Legend 1</p>
       </div>)
     }
     return (
