@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import ClassInfoModal from "./ClassInfoModal";
 import { withFirebase } from "../../../Firebase";
-import image from "react-firebase-file-uploader/lib/utils/image";
 import Alert from "react-bootstrap/Alert";
 
 class ListMyClasses extends Component {

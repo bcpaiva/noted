@@ -27,7 +27,7 @@ class ClassInfoModal extends Component {
       let classData = data;
       console.log("classdata", data);
       for (let key in classData) {
-        if (classData[key]["data"]["class_id"] == this.state.className) {
+        if (classData[key]["data"]["class_id"] === this.state.className) {
           this.setState({
             classUid: key,
           });
@@ -77,7 +77,7 @@ class ClassInfoModal extends Component {
     for (let image in this.state.allImages) {
       items.push(
         <div>
-          <img src={this.state.allImages[image]} />
+          <img alt="class notes" src={this.state.allImages[image]} />
         </div>
       );
     }

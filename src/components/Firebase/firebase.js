@@ -193,7 +193,7 @@ class Firebase {
     });
     currentNotes.push(noteId);
     console.log("currentNotes", currentNotes, "noteID", noteId);
-    this.db.ref("classes/" + classId + "/data" + "/notes").set(currentNotes);
+    this.db.ref("classes/" + classId + "/data/notes").set(currentNotes);
     //-------------------------------------------
   };
 
@@ -226,12 +226,10 @@ class Firebase {
   };
 
   /** Set Password */
-  setPassword = (newPassword) => {
+  setPassword = (newPassword, callback, errorFxn) => {
     this.doPasswordUpdate(newPassword)
-      .then(() => {
-        console.log("Success");
-      })
-      .catch((error) => console.log(error));
+      .then(callback)
+      .catch((error) => errorFxn(error));
   };
 }
 export default Firebase;

@@ -5,12 +5,11 @@ import { withFirebase } from "../../Firebase";
 class MyClasses extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      classList: null, //Where list of user's classes will be stored
+      uid: this.props.currentUser.uid, // Current user's uid
+    };
   }
-
-  state = {
-    classList: null, //Where list of user's classes will be stored
-    uid: this.props.currentUser.uid, // Current user's uid
-  };
 
   componentDidMount() {
     // Fetch data for current user

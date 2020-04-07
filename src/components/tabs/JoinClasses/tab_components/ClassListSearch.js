@@ -183,7 +183,7 @@ class ClassListSearch extends Component {
           {/*Create list items dynamically based on filtered list*/}
 
           {/** If there are no classes available, show message */}
-          {Object.keys(this.state.filtered).length == 0 ? (
+          {Object.keys(this.state.filtered).length === 0 ? (
             <p>No classes available</p>
           ) : null}
 
