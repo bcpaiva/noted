@@ -43,7 +43,8 @@ class Firebase {
 
   doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
 
-  doPasswordUpdate = (password) => this.auth.currentUser.updatePassword(password);
+  doPasswordUpdate = (password) =>
+    this.auth.currentUser.updatePassword(password);
 
   // ****************
 
@@ -117,6 +118,67 @@ class Firebase {
     //-------------------------------------------
   };
 
+  /**
+   * Remove user from class and vice versa
+   * @param {string} userId uid of user to remove from class
+   * @param {string} classId unique class id of class to remove (**NOT class_id**) ex: "UzIQ76RKyw4fSoann1Wg"
+   */
+  removeUserFromClass = (userId, classId, callback) => {
+    ////////////////////////////////////////////
+    // Remove class from user in database ///////////
+    ////////////////////////////////////////////
+    let currentClasses = [];
+    this.db.ref("users/" + userId).on("value", (snapshot) => {
+      // If user's classes is not empty, set it to currentClasses
+      if (snapshot.val().classes) {
+        currentClasses = snapshot.val().classes;
+      }
+    });
+    const classIndex = currentClasses.indexOf(classId);
+    if (classIndex > -1) {
+      currentClasses.splice(classIndex, 1);
+    } else {
+      console.log(
+        "No class found for user:\nClass: ",
+        classId,
+        "\nUser: ",
+        userId
+      );
+    }
+
+    // Remove class from user classes
+    this.db.ref("users/" + userId + "/classes").set(currentClasses);
+    //-------------------------------------------
+
+    /////////////////////////////////////////////
+    // Remove user (student) from class in database ///
+    /////////////////////////////////////////////
+    let currentStudents = [];
+    this.db.ref("classes/" + classId).on("value", (snapshot) => {
+      // If class's students is not empty, set it to currentStudents
+      if (snapshot.val().students) {
+        currentStudents = snapshot.val().students;
+      }
+    });
+    const userIndex = currentStudents.indexOf(userId);
+    if (userIndex > -1) {
+      currentStudents.splice(userIndex, 1);
+    } else {
+      console.log(
+        "No user found in class:\nClass: ",
+        classId,
+        "\nUser: ",
+        userId
+      );
+    }
+
+    this.db
+      .ref("classes/" + classId + "/students")
+      .set(currentStudents)
+      .then(() => callback());
+    //-------------------------------------------
+  };
+
   /////////////////////////////////////////////
   // Add image id to class information in database ///
   /////////////////////////////////////////////
@@ -131,7 +193,7 @@ class Firebase {
     });
     currentNotes.push(noteId);
     console.log("currentNotes", currentNotes, "noteID", noteId);
-    this.db.ref("classes/" + classId + "/data" + "/notes").set(currentNotes);
+    this.db.ref("classes/" + classId + "/data/notes").set(currentNotes);
     //-------------------------------------------
   };
 
@@ -164,12 +226,10 @@ class Firebase {
   };
 
   /** Set Password */
-  setPassword = (newPassword) => {
-    this.doPasswordUpdate(newPassword).then(() => {
-      console.log("Success")
-    }).catch((error) => 
-    console.log(error))
+  setPassword = (newPassword, callback, errorFxn) => {
+    this.doPasswordUpdate(newPassword)
+      .then(callback)
+      .catch((error) => errorFxn(error));
   };
-
 }
 export default Firebase;

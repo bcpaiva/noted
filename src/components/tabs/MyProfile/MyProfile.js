@@ -4,7 +4,7 @@ import { withFirebase } from "../../Firebase"; //Import Firebase
 import Modal from "react-bootstrap/Modal"; //Import modal
 import Form from "react-bootstrap/Form"; //Import form
 import InputGroup from "react-bootstrap/InputGroup"; //Import InputGroup
-import Alert from "react-bootstrap/Alert";
+import Card from "react-bootstrap/Card"; //Import Card
 
 const INITIAL_STATE = {
   email: "", // email form field
@@ -39,19 +39,21 @@ class MyProfile extends Component {
         });
       }
     );
+
+    this.props.firebase.fetchUserData((userData) => {
+      this.setState({ users: userData });
+    });
   }
 
-  
   handlePasswordValidation() {
     // Check if password and confirm password match
     if (this.state.newPassword !== this.state.confirmPassword) {
       this.setState({
-        error: { message: "Passwords do not match" }
+        error: { message: "Passwords do not match" },
       });
       return false;
     }
     return true;
-
   }
 
   handleUsernameValidation() {
@@ -83,36 +85,56 @@ class MyProfile extends Component {
     });
   }
 
-
-
   handlePasswordSubmit() {
-     // If validated, also validate with firebase authentication
+    // Reset error log
+    this.setState({
+      error: null,
+    });
+    // If validated, also validate with firebase authentication
     let validated = this.handlePasswordValidation();
     if (validated) {
-      this.props.firebase.setPassword(this.state.newPassword, (error) => {
-        console.log("Password was not changed.")
-      })
-    };
-    this.setState({ showPasswordModal: false })
+      this.props.firebase.setPassword(
+        this.state.newPassword,
+        () => {
+          // If no error, hide modal
+          if (!this.state.error) {
+            this.setState({
+              showPasswordModal: false,
+              newPassword: "" /* password form field*/,
+              confirmPassword: "" /* confirm password form field*/,
+            });
+          }
+        },
+        (error) => {
+          this.setState({
+            error: error,
+          });
+        }
+      );
+    }
   }
-
 
   // Handle create account form submit
   handleUsernameSubmit() {
+    // Reset error log
+    this.setState({
+      error: null,
+    });
     // If validated, also validate with firebase authentication
     let validated = this.handleUsernameValidation();
-    console.log(this.props.currentUser.uid);
     if (validated) {
-      console.log(this.state.username);
       this.props.firebase.setUsername(
         this.props.currentUser.uid,
         this.state.username,
         () => {
-          /* callback function */
-          this.setState({
-            ...INITIAL_STATE,
-          }); /* Reset states for data integrity */
-         // this.props.onSuccess();
+          // If no error, hide modal
+          console.log(this.state.error);
+          if (!this.state.error) {
+            this.setState({
+              showUsernameModal: false,
+              error: null,
+            });
+          }
         }
       );
     }
@@ -140,41 +162,55 @@ class MyProfile extends Component {
             <div className="col"></div>
           </div>
           {/* Edit Profile Name */}
-          <div className="row pb-2">
-            <div className="col-6 p">First Name: {this.state.name}</div>
+          <Card>
+            <Card.Header as="h5">First Name</Card.Header>
+            <Card.Body>
+              <Card.Text> {this.state.name}</Card.Text>
+            </Card.Body>
+            <Card.Header as="h5">Last Name</Card.Header>
+            <Card.Body>
+              <Card.Text> {this.state.lastname}</Card.Text>
+            </Card.Body>
+            <Card.Header as="h5">Username</Card.Header>
+            <Card.Body>
+              <Card.Text> {this.state.username}</Card.Text>
+            </Card.Body>
+          </Card>
+          <div className="pt-2">
+            <Button
+              variant="primary"
+              onClick={() => this.setState({ showUsernameModal: true })}
+            >
+              Change Username
+            </Button>
+            {"   "}
+            <Button
+              variant="primary"
+              onClick={() => this.setState({ showPasswordModal: true })}
+            >
+              Change Password
+            </Button>
           </div>
-          <div className="row pb-2">
-            <div className="col-6 p">Last Name: {this.state.lastname}</div>
-          </div>
-          <div className="row pb-2">
-            <div className="col-6 p">Username: {this.state.username}</div>
-          </div>
-          <Button
-            variant="primary"
-            onClick={() => this.setState({ showUsernameModal: true })}
-          >
-            Change Username
-          </Button>
-          {"    "}
-          <Button
-            variant="primary"
-            onClick={() => this.setState({ showPasswordModal: true })}
-          >
-            Change Password
-          </Button>
-          {"    "}
         </div>
         {/* Change username modal */}
         <Modal
           show={this.state.showUsernameModal}
-          onHide={() => this.setState({ showUsernameModal: false })}
+          onHide={() =>
+            this.setState({ showUsernameModal: false, error: null })
+          }
         >
-          <Form id="changeUsername">
+          <Form
+            id="changeUsername"
+            onSubmit={(event) => event.preventDefault()}
+          >
             <Modal.Header closeButton>
               <Modal.Title>Change Username</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form.Group controlId="newUsername">
+                {this.state.error ? (
+                  <p>{"Error: " + this.state.error["message"]}</p>
+                ) : null}
                 <Form.Label>Type your new username:</Form.Label>
                 <InputGroup>
                   <InputGroup.Prepend>
@@ -186,15 +222,14 @@ class MyProfile extends Component {
                     type="text"
                     placeholder="Username"
                   />
-                  <Form.Control.Feedback type="invalid">
-                    Please choose a username.
-                  </Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>
               <Modal.Footer>
                 <Button
                   variant="secondary"
-                  onClick={() => this.setState({ showUsernameModal: false })}
+                  onClick={() =>
+                    this.setState({ showUsernameModal: false, error: null })
+                  }
                 >
                   Cancel
                 </Button>
@@ -209,19 +244,24 @@ class MyProfile extends Component {
         {/* Change password modal */}
         <Modal
           show={this.state.showPasswordModal}
-          onHide={() => this.setState({ showPasswordModal: false })}
+          onHide={() =>
+            this.setState({ showPasswordModal: false, error: null })
+          }
         >
-          <Form id="changeUsername" >
+          <Form id="changePassword">
             <Modal.Header closeButton>
               <Modal.Title>Change Password</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form.Group controlId="newPassword">
+                {this.state.error ? (
+                  <p>{"Error: " + this.state.error["message"]}</p>
+                ) : null}
                 <Form.Label>Please enter a new password</Form.Label>
                 <Form.Control
                   name="newPassword"
                   onChange={this.handleChange}
-                  type="text"
+                  type="password"
                   placeholder="New Password"
                 />
               </Form.Group>
@@ -230,14 +270,16 @@ class MyProfile extends Component {
                 <Form.Control
                   name="confirmPassword"
                   onChange={this.handleChange}
-                  type="text"
+                  type="password"
                   placeholder="Confirm Password"
                 />
               </Form.Group>
               <Modal.Footer>
                 <Button
                   variant="secondary"
-                  onClick={() => this.setState({ showPasswordModal: false })}
+                  onClick={() =>
+                    this.setState({ showPasswordModal: false, error: null })
+                  }
                 >
                   Cancel
                 </Button>

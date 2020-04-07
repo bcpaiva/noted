@@ -8,9 +8,6 @@ import LoginPage from "../login/LoginPage";
  */
 
 class RenderApp extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (

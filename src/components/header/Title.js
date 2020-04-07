@@ -1,9 +1,5 @@
 import React, { Component } from "react";
-import { Button, NavDropdown, Navbar, Nav, NavItem } from "react-bootstrap";
-import { MenuItem, DropdownMenu } from "react-bootstrap-dropdown-menu";
-import LogoutItem from "./header_components/LogoutItem";
-import MyClasses from "../tabs/MyClasses/MyClasses";
-import MyProfile from "../tabs/MyProfile/MyProfile";
+import { Navbar, Nav } from "react-bootstrap";
 import LoginHeader from "./header_components/LoginHeader";
 
 class Title extends Component {
