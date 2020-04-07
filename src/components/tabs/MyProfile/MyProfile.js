@@ -4,6 +4,7 @@ import { withFirebase } from "../../Firebase"; //Import Firebase
 import Modal from "react-bootstrap/Modal"; //Import modal
 import Form from "react-bootstrap/Form"; //Import form
 import InputGroup from "react-bootstrap/InputGroup"; //Import InputGroup
+import Alert from "react-bootstrap/Alert";
 
 const INITIAL_STATE = {
   email: "", // email form field
@@ -21,6 +22,7 @@ class MyProfile extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleUsernameValidation = this.handleUsernameValidation.bind(this);
     this.handleUsernameSubmit = this.handleUsernameSubmit.bind(this);
+    this.handlePasswordSubmit = this.handlePasswordSubmit.bind(this);
   }
 
   state = { ...INITIAL_STATE };
@@ -39,7 +41,7 @@ class MyProfile extends Component {
     );
   }
 
-  /*
+  
   handlePasswordValidation() {
     // Check if password and confirm password match
     if (this.state.newPassword !== this.state.confirmPassword) {
@@ -48,9 +50,9 @@ class MyProfile extends Component {
       });
       return false;
     }
+    return true;
 
   }
-  */
 
   handleUsernameValidation() {
     // Check if username is already in use
@@ -81,6 +83,20 @@ class MyProfile extends Component {
     });
   }
 
+
+
+  handlePasswordSubmit() {
+     // If validated, also validate with firebase authentication
+    let validated = this.handlePasswordValidation();
+    if (validated) {
+      this.props.firebase.setPassword(this.state.newPassword, (error) => {
+        console.log("Password was not changed.")
+      })
+    };
+    this.setState({ showPasswordModal: false })
+  }
+
+
   // Handle create account form submit
   handleUsernameSubmit() {
     // If validated, also validate with firebase authentication
@@ -96,7 +112,7 @@ class MyProfile extends Component {
           this.setState({
             ...INITIAL_STATE,
           }); /* Reset states for data integrity */
-          this.props.onSuccess();
+         // this.props.onSuccess();
         }
       );
     }
@@ -193,9 +209,9 @@ class MyProfile extends Component {
         {/* Change password modal */}
         <Modal
           show={this.state.showPasswordModal}
-          onClick={() => this.setState({ showPasswordModal: false })}
+          onHide={() => this.setState({ showPasswordModal: false })}
         >
-          <Form id="changeUsername" onSubmit={this.handleSubmit}>
+          <Form id="changeUsername" >
             <Modal.Header closeButton>
               <Modal.Title>Change Password</Modal.Title>
             </Modal.Header>
@@ -225,7 +241,7 @@ class MyProfile extends Component {
                 >
                   Cancel
                 </Button>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" onClick={this.handlePasswordSubmit}>
                   Submit
                 </Button>
               </Modal.Footer>

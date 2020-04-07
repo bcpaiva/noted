@@ -43,8 +43,7 @@ class Firebase {
 
   doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
 
-  doPasswordUpdate = (password) =>
-    this.auth.currentUser.updatePassword(password);
+  doPasswordUpdate = (password) => this.auth.currentUser.updatePassword(password);
 
   // ****************
 
@@ -163,6 +162,14 @@ class Firebase {
       .update({ username: username })
       .then(callback());
   };
-}
 
+  /** Set Password */
+  setPassword = (newPassword) => {
+    this.doPasswordUpdate(newPassword).then(() => {
+      console.log("Success")
+    }).catch((error) => 
+    console.log(error))
+  };
+
+}
 export default Firebase;
