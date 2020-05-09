@@ -7,14 +7,14 @@ import "firebase/auth";
 
 // Config settings for firebase
 const config = {
-  apiKey: "AIzaSyA3UGnZkHIiUm4Hasvqq4aRbEKpB83BVIA",
-  authDomain: "noted-24e52.firebaseapp.com",
-  databaseURL: "https://noted-24e52.firebaseio.com",
-  projectId: "noted-24e52",
-  storageBucket: "noted-24e52.appspot.com",
-  messagingSenderId: "85650534633",
-  appId: "1:85650534633:web:e545957dd77ea2949c4078",
-  measurementId: "G-TFF9KXG0LL"
+  apiKey: "****",
+  authDomain: "****",
+  databaseURL: "****",
+  projectId: "****",
+  storageBucket: "****",
+  messagingSenderId: "****",
+  appId: "****",
+  measurementId: "****"
 };
 
 class Firebase {
