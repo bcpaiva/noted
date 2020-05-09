@@ -14,7 +14,7 @@ const config = {
   storageBucket: "****",
   messagingSenderId: "****",
   appId: "****",
-  measurementId: "****"
+  measurementId: "****ß"
 };
 
 class Firebase {

@@ -23,15 +23,14 @@ class ClassListSearch extends Component {
     currentUserId: this.props.currentUser // If user is logged in,
       ? this.props.currentUser.uid // set to current user UID
       : null, // If not, set to null
-    error: null // error log
+    error: null, // error log
   };
 
   // If component is created successfully,
   componentDidMount() {
     // Get classes from firebase and assign them to classData state
-    this.props.firebase.fetchClassData(data => {
+    this.props.firebase.fetchClassData((data) => {
       let classData = data;
-      console.log(this.props.currentUser);
 
       // Filter classData based on classes current user is already in
       for (let key in classData) {
@@ -46,7 +45,7 @@ class ClassListSearch extends Component {
       // Update filtered and available classes with new class data
       this.setState({
         filtered: classData,
-        availableClasses: classData
+        availableClasses: classData,
       });
 
       // Initialize clicked to false for all class objects after firebase data has been received
@@ -60,7 +59,7 @@ class ClassListSearch extends Component {
 
   // Change value of clicked for certain class
   updateClicked(classKey, value) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let clicked = prevState.clicked;
       clicked[classKey] = value;
       return clicked;
@@ -98,7 +97,7 @@ class ClassListSearch extends Component {
     }
     // Set the filtered state based on what our rules added to newList
     this.setState({
-      filtered: newList
+      filtered: newList,
     });
   }
 
@@ -122,7 +121,7 @@ class ClassListSearch extends Component {
     delete this.state.filtered[classKey];
 
     // Remove class from clicked state
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let clicked = prevState.clicked;
       delete clicked[classKey];
       return clicked;
@@ -130,7 +129,7 @@ class ClassListSearch extends Component {
 
     // Show alert that class add was successful
     this.setState({
-      showAlert: true
+      showAlert: true,
     });
 
     this.props.firebase.addUserToClass(this.state.currentUserId, classKey);
@@ -139,7 +138,7 @@ class ClassListSearch extends Component {
   // Hide alert when alert is closed
   handleCloseAlert = () => {
     this.setState({
-      showAlert: false
+      showAlert: false,
     });
   };
 
@@ -167,7 +166,7 @@ class ClassListSearch extends Component {
             placeholder={this.props.placeholder || "Search..."} //Default="Search..."
           />
           {/*Show modal to join class if clicked*/}
-          {Object.keys(this.state.filtered).map(classKey => {
+          {Object.keys(this.state.filtered).map((classKey) => {
             return (
               // If class was clicked, show add class modal
               this.state.clicked[classKey] ? (
@@ -182,14 +181,13 @@ class ClassListSearch extends Component {
           })}
 
           {/*Create list items dynamically based on filtered list*/}
-          {console.log("filtered: ", this.state.availableClasses)}
 
           {/** If there are no classes available, show message */}
-          {Object.keys(this.state.filtered).length == 0 ? (
+          {Object.keys(this.state.filtered).length === 0 ? (
             <p>No classes available</p>
           ) : null}
 
-          {Object.keys(this.state.filtered).map(classKey => {
+          {Object.keys(this.state.filtered).map((classKey) => {
             return (
               // Show each class item in ListGroup
               <ListGroup.Item

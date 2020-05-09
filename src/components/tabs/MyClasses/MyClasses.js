@@ -3,49 +3,57 @@ import ListMyClasses from "./tab_components/ListMyClasses";
 import { withFirebase } from "../../Firebase";
 
 class MyClasses extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      classList: null, //Where list of user's classes will be stored
+      uid: this.props.currentUser.uid, // Current user's uid
+    };
+  }
+
   componentDidMount() {
     // Fetch data for current user
-    this.props.firebase.fetchUserData(data => {
-      let userData = data;
-
-      // Iterate through all users until current user is found 
-      for (let key in userData) {
-        if (key == this.props.currentUser.uid) {
-
-          // When user is found, set the classes array to classesIDs
-          let classIdentifiers = userData[key]["classes"];
-          this.props.firebase.fetchClassData(dataClass => {
-            let classData = dataClass;
-
-            // Iterate through class data to display the classes that are currently enrolled in
-            for (let value in classIdentifiers) {
-              var className =
-                classData[classIdentifiers[value]]["data"]["class_id"];
-              if (!this.state.list.indexOf(className) > -1) {
-
-                // Set list of classes equal to the new list of classes with the new class added
-                this.state.list = this.state.list.concat(className);
-                const uniqueNames = Array.from(new Set(this.state.list));
-
-                // Set the state of the list to be displayed as a table view
-                this.setState({ list: uniqueNames });
-
-                // Map the true class names to their FB identifier
-                this.state.classMap[className] = this.state.classesIDs[value];
-              }
+    this.props.firebase.fetchSingleUserData(this.state.uid, (userData) => {
+      // Store user's classes
+      let userClasses = userData.classes;
+      // If they are enrolled in any classes,
+      if (userClasses) {
+        // fetch all class data from firebase
+        this.props.firebase.fetchClassData((classData) => {
+          let classList = [];
+          // For each class,
+          for (let classKey in classData) {
+            // If user is in class,
+            if (userClasses.includes(classKey)) {
+              classList.push(classData[classKey]["data"]["class_id"]);
             }
+          }
+          this.setState({
+            classList: classList,
           });
-        }
+        });
+        // If they aren't in any classes, return empty array
+      } else {
+        this.setState({
+          classList: [],
+        });
       }
     });
   }
-  state = { list: [], classMap: {}, classesIDs: [] }; 
 
   render() {
+    // Wait for classes to come from firebase
+    if (!this.state.classList) {
+      return <div />;
+    }
+
     return (
       <div className="container text-center">
         <div className="h2">My Classes</div>
-        <ListMyClasses list={this.state.list} />
+        <ListMyClasses
+          currentUser={this.props.currentUser}
+          classList={this.state.classList}
+        />
       </div>
     );
   }
